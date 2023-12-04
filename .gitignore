@@ -1,0 +1,35 @@
+# Created by https://www.toptal.com/developers/gitignore/api/codeigniter
+# Edit at https://www.toptal.com/developers/gitignore?templates=codeigniter
+
+### CodeIgniter ###
+*/config/development
+*/logs/log-*.php
+!*/logs/index.html
+*/cache/*
+!system/cache/*
+!*/cache/index.html
+!*/cache/.htaccess
+
+user_guide_src/build/*
+user_guide_src/cilexer/build/*
+user_guide_src/cilexer/dist/*
+user_guide_src/cilexer/pycilexer.egg-info/*
+
+application/config/config.php
+application/config/database.php
+application/config/constants.php
+
+#codeigniter 3
+application/logs/*
+!application/logs/index.html
+!application/logs/.htaccess
+/vendor/
+
+application/config/config.php
+application/config/database.php
+/upload/
+index.php
+
+### CodeIgniter Patch ###
+
+# End of https://www.toptal.com/developers/gitignore/api/codeigniter
