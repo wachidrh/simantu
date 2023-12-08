@@ -189,30 +189,7 @@
 									<div class="menu-item pt-5">
 										<div class="menu-content"><span class="menu-heading fw-bold text-uppercase fs-7">Main</span></div>
 									</div>
-									<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-										<span class="menu-link">
-											<span class="menu-icon"><i class="fa-duotone fa-sack-dollar fs-2"></i>
-											</span>
-											<span class="menu-title">Billing</span><span class="menu-arrow"></span>
-										</span>
-										<div class="menu-sub menu-sub-accordion">
-											<div class="menu-item">
-												<a class="menu-link" href="<?php echo base_url() . 'billing/rekening/bayar-tagihan'; ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Pembayaran Rekening</span></a>
-											</div>
-										</div>
-									</div>
-									<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-										<span class="menu-link">
-											<span class="menu-icon"><i class="fa-sharp fa-solid fa-barcode fs-2"></i>
-											</span>
-											<span class="menu-title">Baca Meter</span><span class="menu-arrow"></span>
-										</span>
-										<div class="menu-sub menu-sub-accordion">
-											<div class="menu-item">
-												<a class="menu-link" href="<?php echo base_url() . 'hublang/cater/hasil-baca'; ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Data Hasil Baca Meter</span></a>
-											</div>
-										</div>
-									</div>
+
 									<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
 										<span class="menu-link">
 											<span class="menu-icon"><i class="fa-light fa-gears fs-2"></i>
@@ -221,15 +198,15 @@
 										</span>
 										<div class="menu-sub menu-sub-accordion">
 											<div class="menu-item">
-												<a class="menu-link" href="<?php echo base_url() . 'settings/wilayah/setup-wilayah'; ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Setup Wilayah</span></a>
-											</div>
-											<div class="menu-item">
-												<a class="menu-link" href="<?php echo base_url() . 'settings/desa/setup-desa'; ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Setup Desa</span></a>
-											</div>
-											<div class="menu-item">
-												<a class="menu-link" href="<?php echo base_url() . 'settings/tarif/setup-tarif'; ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Setup Tarif</span></a>
+												<a class="menu-link" href="<?php echo base_url() . '#'; ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Setup Wilayah</span></a>
 											</div>
 										</div>
+									</div>
+									<div class="menu-item">
+										<a class="menu-link <?php echo $this->uri->segment(1) == 'pengguna' ? 'active' : ''; ?>" href="<?php echo base_url() . 'pengguna/list-pengguna'; ?>">
+											<span class="menu-icon"><i class="ki-outline ki-profile-user fs-2"></i></span>
+											<span class="menu-title">Pengguna</span>
+										</a>
 									</div>
 
 									<div class="menu-item pt-5">

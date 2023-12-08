@@ -7,3 +7,8 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['logout'] = 'login/logout';
 $route['login'] = 'login/index';
+
+
+// Pengguna
+$route['pengguna/list-pengguna'] = 'pengguna/index';
+$route['pengguna/get-pengguna'] = 'pengguna/get_pengguna';
