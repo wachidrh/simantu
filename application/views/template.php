@@ -218,6 +218,9 @@
 											<div class="menu-item">
 												<a class="menu-link <?= current_url() == base_url('master/kriteria') ? 'active' : ''; ?>" href="<?php echo base_url() . 'master/kriteria'; ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Kriteria Pemeriksaan</span></a>
 											</div>
+											<div class="menu-item">
+												<a class="menu-link <?= current_url() == base_url('master/metode') ? 'active' : ''; ?>" href="<?php echo base_url() . 'master/metode'; ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Metode Pemeriksaan</span></a>
+											</div>
 										</div>
 									</div>
 									<div class="menu-item">

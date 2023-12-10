@@ -5,8 +5,8 @@ var KTMPeralatanList = (function () {
 
 	return {
 		init: function () {
-			var url = hostUrl + "master/kriteria/list";
-			table = $("#kt_m_kriteria_table").DataTable({
+			var url = hostUrl + "master/metode/list";
+			table = $("#kt_m_metode_table").DataTable({
 				responsive: true,
 				processing: true,
 				serverSide: true,
@@ -64,15 +64,15 @@ var KTMPeralatanList = (function () {
 				table.ajax.reload(null, false);
 			});
 
-			// start tambah master kriteria pemeriksaan
-			const formTambahMKriteria = document.getElementById("form-tambah-m-kriteria");
-			var valid_form_tambah = FormValidation.formValidation(formTambahMKriteria, {
+			// start tambah master metode pemeriksaan
+			const formTambahMMetode = document.getElementById("form-tambah-m-metode");
+			var valid_form_tambah = FormValidation.formValidation(formTambahMMetode, {
 				framework: "bootstrap",
 				fields: {
-					kriteria: {
+					metode: {
 						validators: {
 							notEmpty: {
-								message: "Kriteria pemeriksaan harus diisi",
+								message: "Metode pemeriksaan harus diisi",
 							},
 						},
 					},
@@ -88,46 +88,46 @@ var KTMPeralatanList = (function () {
 				},
 			});
 
-			const submitSimpanMKriteria = document.getElementById("btn-submit-tambah-m-kriteria");
-			submitSimpanMKriteria.addEventListener("click", function (e) {
-				formTambahMKriteria.addEventListener('submit', function(event) {
+			const submitSimpanMMetode = document.getElementById("btn-submit-tambah-m-metode");
+			submitSimpanMMetode.addEventListener("click", function (e) {
+				formTambahMMetode.addEventListener('submit', function(event) {
 					event.preventDefault();
-					formTambahMKriteria.submit();
+					formTambahMMetode.submit();
 				});
 				
 				if (valid_form_tambah) {
 					valid_form_tambah.validate().then(function (status) {
 						if (status == "Valid") {
-							submitSimpanMKriteria.setAttribute("data-kt-indicator", "on");
-							submitSimpanMKriteria.disabled = true;
+							submitSimpanMMetode.setAttribute("data-kt-indicator", "on");
+							submitSimpanMMetode.disabled = true;
 
-							var formData = new FormData(formTambahMKriteria);
+							var formData = new FormData(formTambahMMetode);
 							$.ajax({
 								type: "POST",
-								url: hostUrl + "master/kriteria/store",
+								url: hostUrl + "master/metode/store",
 								data: formData,
 								contentType: false,
 								cache: false,
 								processData: false,
 								beforeSend: function (data) {
-									submitSimpanMKriteria.setAttribute("data-kt-indicator", "on");
-									submitSimpanMKriteria.disabled = true;
+									submitSimpanMMetode.setAttribute("data-kt-indicator", "on");
+									submitSimpanMMetode.disabled = true;
 								},
 								success: function (data) {
 									const result = JSON.parse(data);
 									if (result.status == true) {
-										$("#modal_add_kriteria").modal("hide");
+										$("#modal_add_metode").modal("hide");
 										Swal.fire({
-											text: "Data kriteria pemeriksaan berhasil ditambahkan",
+											text: "Data metode pemeriksaan berhasil ditambahkan",
 											icon: "success",
 											confirmButtonColor: "#3085d6",
 											confirmButtonText: "Ok",
 										});
 										table.ajax.reload(null, false);
 
-										formTambahMKriteria.reset();
+										formTambahMMetode.reset();
 									} else {
-										toastr.warning("Data kriteria pemeriksaan gagal ditambahkan", "Gagal!", {
+										toastr.warning("Data metode pemeriksaan gagal ditambahkan", "Gagal!", {
 											timeOut: 2000,
 											extendedTimeOut: 0,
 											closeButton: true,
@@ -136,12 +136,12 @@ var KTMPeralatanList = (function () {
 									}
 								},
 								complete: function (data) {
-									submitSimpanMKriteria.setAttribute("data-kt-indicator", "off");
-									submitSimpanMKriteria.disabled = false;
+									submitSimpanMMetode.setAttribute("data-kt-indicator", "off");
+									submitSimpanMMetode.disabled = false;
 								},
 								error: function (data) {
-									submitSimpanMKriteria.setAttribute("data-kt-indicator", "off");
-									submitSimpanMKriteria.disabled = false;
+									submitSimpanMMetode.setAttribute("data-kt-indicator", "off");
+									submitSimpanMMetode.disabled = false;
 
 									toastr.error("Terjadi kesalahan sistem.", "Gagal!", {
 										timeOut: 2000,
@@ -155,17 +155,17 @@ var KTMPeralatanList = (function () {
 					});
 				}
 			});
-			// end tambah master jenis peralatan
+			// end tambah master metode pemeriksaan
 
 			// Edit Asal Pengguna
-			$(document).on("click", ".ubah-kriteria", function (e) {
+			$(document).on("click", ".ubah-metode", function (e) {
 				e.preventDefault();
-				var id_kriteria = $(this).attr("data-id");
+				var id_metode = $(this).attr("data-id");
 				
 				$.ajax({
-					url: hostUrl + "master/kriteria/lookup",
+					url: hostUrl + "master/metode/lookup",
 					type: "POST",
-					data: { id_kriteria: id_kriteria },
+					data: { id_metode: id_metode },
 					dataType: "json",
 					beforeSend: function () {
 						KTApp.showPageLoading();
@@ -173,10 +173,10 @@ var KTMPeralatanList = (function () {
 					success: function (response) {
 						if (response.status == true && Object.keys(response.data).length !== 0) {
 
-							$("[name='edit_id_kriteria']").val(id_kriteria);
-							$("[name='edit_kriteria']").val(response.data.kriteria);
+							$("[name='edit_id_metode']").val(id_metode);
+							$("[name='edit_metode']").val(response.data.metode);
 			
-							$("#modal_edit_kriteria").modal("show");
+							$("#modal_edit_metode").modal("show");
 						} else {
 							toastr.error("Terjadi kesalahan saat memuat data.", "Gagal!", {
 								timeOut: 2000,
@@ -200,14 +200,14 @@ var KTMPeralatanList = (function () {
 				});
 			});			
 
-			const formEditJenisKriteria = document.getElementById("form-edit-m-kriteria");
-			var valid_update = FormValidation.formValidation(formEditJenisKriteria, {
+			const formEditMetode = document.getElementById("form-edit-m-metode");
+			var valid_update = FormValidation.formValidation(formEditMetode, {
 				framework: "bootstrap",
 				fields: {
-					edit_kriteria: {
+					edit_metode: {
 						validators: {
 							notEmpty: {
-								message: "Kriteria pemeriksaan harus diisi",
+								message: "Metode pemeriksaan harus diisi",
 							},
 						},
 					},
@@ -223,46 +223,46 @@ var KTMPeralatanList = (function () {
 				},
 			});
 
-			const submitUpdateMKriteria = document.getElementById("btn-submit-edit-m-kriteria");
-			submitUpdateMKriteria.addEventListener("click", function (e) {
-				formEditJenisKriteria.addEventListener('submit', function(event) {
+			const submitUpdateMMetode = document.getElementById("btn-submit-edit-m-metode");
+			submitUpdateMMetode.addEventListener("click", function (e) {
+				formEditMetode.addEventListener('submit', function(event) {
 					event.preventDefault();
-					formEditJenisKriteria.submit();
+					formEditMetode.submit();
 				});
 
 				if (valid_update) {
 					valid_update.validate().then(function (status) {
 						if (status == "Valid") {
-							submitUpdateMKriteria.setAttribute("data-kt-indicator", "on");
-							submitUpdateMKriteria.disabled = true;
+							submitUpdateMMetode.setAttribute("data-kt-indicator", "on");
+							submitUpdateMMetode.disabled = true;
 
-							var formData = new FormData(formEditJenisKriteria);
+							var formData = new FormData(formEditMetode);
 							$.ajax({
 								type: "POST",
-								url: hostUrl + "master/kriteria/update",
+								url: hostUrl + "master/metode/update",
 								data: formData,
 								contentType: false,
 								cache: false,
 								processData: false,
 								beforeSend: function (data) {
-									submitUpdateMKriteria.setAttribute("data-kt-indicator", "on");
-									submitUpdateMKriteria.disabled = true;
+									submitUpdateMMetode.setAttribute("data-kt-indicator", "on");
+									submitUpdateMMetode.disabled = true;
 								},
 								success: function (data) {
 									const result = JSON.parse(data);
 									if (result.status == true) {
-										$("#modal_edit_kriteria").modal("hide");
+										$("#modal_edit_metode").modal("hide");
 										Swal.fire({
-											text: "Data kriteria pemeriksaan berhasil diperbarui",
+											text: "Data metode pemeriksaan berhasil diperbarui",
 											icon: "success",
 											confirmButtonColor: "#3085d6",
 											confirmButtonText: "Ok",
 										});
 										table.ajax.reload(null, false);
 
-										formEditJenisKriteria.reset();
+										formEditMetode.reset();
 									} else {
-										toastr.warning("Data kriteria pemeriksaan gagal diperbarui", "Gagal!", {
+										toastr.warning("Data metode pemeriksaan gagal diperbarui", "Gagal!", {
 											timeOut: 2000,
 											extendedTimeOut: 0,
 											closeButton: true,
@@ -271,12 +271,12 @@ var KTMPeralatanList = (function () {
 									}
 								},
 								complete: function (data) {
-									submitUpdateMKriteria.setAttribute("data-kt-indicator", "off");
-									submitUpdateMKriteria.disabled = false;
+									submitUpdateMMetode.setAttribute("data-kt-indicator", "off");
+									submitUpdateMMetode.disabled = false;
 								},
 								error: function (data) {
-									submitUpdateMKriteria.setAttribute("data-kt-indicator", "off");
-									submitUpdateMKriteria.disabled = false;
+									submitUpdateMMetode.setAttribute("data-kt-indicator", "off");
+									submitUpdateMMetode.disabled = false;
 
 									toastr.error("Terjadi kesalahan sistem.", "Gagal!", {
 										timeOut: 2000,
@@ -292,13 +292,13 @@ var KTMPeralatanList = (function () {
 			});
 			// Edit Asal Pengguna
 
-			$(document).on("click", ".hapus-kriteria", function (e) {
+			$(document).on("click", ".hapus-metode", function (e) {
 				e.preventDefault();
 
-				var id_kriteria = $(this).attr("data-id");
+				var id_metode = $(this).attr("data-id");
 
 				Swal.fire({
-					text: "Apakah Anda yakin ingin menghapus kriteria pemeriksaan yang dipilih?",
+					text: "Apakah Anda yakin ingin menghapus metode pemeriksaan yang dipilih?",
 					icon: "warning",
 					showCancelButton: true,
 					buttonsStyling: false,
@@ -311,9 +311,9 @@ var KTMPeralatanList = (function () {
 				}).then(function (result) {
 					if (result.isConfirmed) {
 						$.ajax({
-							url: hostUrl + "master/kriteria/delete",
+							url: hostUrl + "master/metode/delete",
 							type: "POST",
-							data: { "id_kriteria[]": id_kriteria },
+							data: { "id_metode[]": id_metode },
 							beforeSend: function () {
 								KTApp.showPageLoading();
 							},
@@ -322,7 +322,7 @@ var KTMPeralatanList = (function () {
 								if (response.status == true) {
 									table.ajax.reload(null, false);
 									Swal.fire({
-										text: "Anda telah menghapus semua kriteria pemeriksaan terpilih!",
+										text: "Anda telah menghapus semua metode pemeriksaan terpilih!",
 										icon: "success",
 										buttonsStyling: false,
 										confirmButtonText: "Ok, mengerti!",

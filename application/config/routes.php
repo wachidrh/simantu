@@ -36,3 +36,11 @@ $route['master/kriteria/store'] = 'master_kriteria/kriteria/store';
 $route['master/kriteria/lookup'] = 'master_kriteria/kriteria/lookup';
 $route['master/kriteria/update'] = 'master_kriteria/kriteria/update';
 $route['master/kriteria/delete'] = 'master_kriteria/kriteria/delete';
+
+// master metode
+$route['master/metode'] = 'master_metode/metode/index';
+$route['master/metode/list'] = 'master_metode/metode/list';
+$route['master/metode/store'] = 'master_metode/metode/store';
+$route['master/metode/lookup'] = 'master_metode/metode/lookup';
+$route['master/metode/update'] = 'master_metode/metode/update';
+$route['master/metode/delete'] = 'master_metode/metode/delete';
