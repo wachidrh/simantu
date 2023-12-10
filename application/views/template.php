@@ -202,8 +202,20 @@
 											</div>
 										</div>
 									</div>
+									<div data-kt-menu-trigger="click" class="menu-item menu-accordion <?= $this->uri->segment(1) == 'master' ? 'show' : ''; ?>">
+										<span class="menu-link">
+											<span class="menu-icon"><i class="fa-light fa-box fs-2"></i>
+											</span>
+											<span class="menu-title">Data Master</span><span class="menu-arrow"></span>
+										</span>
+										<div class="menu-sub menu-sub-accordion">
+											<div class="menu-item">
+												<a class="menu-link <?= current_url() == base_url('master/peralatan') ? 'active' : ''; ?>" href="<?php echo base_url() . 'master/peralatan'; ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Peralatan</span></a>
+											</div>
+										</div>
+									</div>
 									<div class="menu-item">
-										<a class="menu-link <?php echo $this->uri->segment(1) == 'pengguna' ? 'active' : ''; ?>" href="<?php echo base_url() . 'pengguna/list-pengguna'; ?>">
+										<a class="menu-link <?= current_url() == base_url('pengguna/list-pengguna') ? 'active' : ''; ?>" href="<?= base_url('pengguna/list-pengguna'); ?>">
 											<span class="menu-icon"><i class="ki-outline ki-profile-user fs-2"></i></span>
 											<span class="menu-title">Pengguna</span>
 										</a>
