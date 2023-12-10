@@ -28,3 +28,11 @@ $route['master/item-peralatan/store'] = 'master_item_peralatan/itemperalatan/sto
 $route['master/item-peralatan/lookup'] = 'master_item_peralatan/itemperalatan/lookup';
 $route['master/item-peralatan/update'] = 'master_item_peralatan/itemperalatan/update';
 $route['master/item-peralatan/delete'] = 'master_item_peralatan/itemperalatan/delete';
+
+// master kriteria
+$route['master/kriteria'] = 'master_kriteria/kriteria/index';
+$route['master/kriteria/list'] = 'master_kriteria/kriteria/list';
+$route['master/kriteria/store'] = 'master_kriteria/kriteria/store';
+$route['master/kriteria/lookup'] = 'master_kriteria/kriteria/lookup';
+$route['master/kriteria/update'] = 'master_kriteria/kriteria/update';
+$route['master/kriteria/delete'] = 'master_kriteria/kriteria/delete';
