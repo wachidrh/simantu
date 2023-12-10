@@ -212,6 +212,9 @@
 											<div class="menu-item">
 												<a class="menu-link <?= current_url() == base_url('master/peralatan') ? 'active' : ''; ?>" href="<?php echo base_url() . 'master/peralatan'; ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Peralatan</span></a>
 											</div>
+											<div class="menu-item">
+												<a class="menu-link <?= current_url() == base_url('master/item-peralatan') ? 'active' : ''; ?>" href="<?php echo base_url() . 'master/item-peralatan'; ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Item Peralatan</span></a>
+											</div>
 										</div>
 									</div>
 									<div class="menu-item">
