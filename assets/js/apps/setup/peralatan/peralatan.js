@@ -209,6 +209,16 @@ var KTPeralatanList = (function () {
 					},
 					complete: function () {
 						KTApp.hidePageLoading();
+						if ("NDEFReader" in window) { 
+							read()
+						} else{
+							Swal.fire({
+								text: "Device tidak support NFC Reader",
+								icon: "error",
+								confirmButtonColor: "#3085d6",
+								confirmButtonText: "Ok",
+							});
+						}
 					},
 					error: function () {
 						toastr.error("Terjadi kesalahan saat memuat data.", "Gagal!", {
@@ -220,17 +230,6 @@ var KTPeralatanList = (function () {
 					},
 				});
 			});	
-			
-			if ("NDEFReader" in window) { 
-				read()
-			 } else{
-				Swal.fire({
-					text: "Device tidak support NFC Reader",
-					icon: "error",
-					confirmButtonColor: "#3085d6",
-					confirmButtonText: "Ok",
-				});
-			}
 
 			const formEditPeralatan = document.getElementById("form-edit-peralatan");
 			var valid_update = FormValidation.formValidation(formEditPeralatan, {
