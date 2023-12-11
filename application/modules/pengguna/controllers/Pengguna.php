@@ -32,7 +32,7 @@ class Pengguna extends CI_Controller
 
             $row[] = '<p href="#" class="text-primary text-hover-primary mb-1">' . $ls['full_name'] . '</p><small>' . $ls['kopeg'] . '</small>';
             $row[] = '<p class="text-dark mb-0">' . relative_time(oracle_time($ls['created_at'])) . '</p><small>' . format_time(oracle_time($ls['created_at'])) . '</small>';
-            $row[] = '<div class="dropdown">
+            $row[] = '<div class="dropdown  text-end">
                         <a class="btn btn-light btn-active-light-primary btn-sm dropdown-toggle" href="#" role="button" id="actions" data-bs-toggle="dropdown" aria-expanded="false">
                             Actions
                         </a>    

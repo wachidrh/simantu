@@ -59,8 +59,8 @@ class Kriteria extends CI_Controller
 	public function store() 
 	{
 		$input = array(
-			'id_kriteria' => last_id('m_kriteria_pemeriksaan', 'edit_id_kriteria'),
-			'kriteria' => $this->security->xss_clean(strtolower($this->input->post('edit_kriteria')))
+			'id_kriteria' => last_id('m_kriteria_pemeriksaan', 'id_kriteria'),
+			'kriteria' => $this->security->xss_clean($this->input->post('kriteria'))
 		);
 		$this->db->set('"created_at"', "TO_DATE('$this->now', 'YYYY-MM-DD HH24:MI:SS')", false);
 		$this->db->set('"updated_at"', "TO_DATE('$this->now', 'YYYY-MM-DD HH24:MI:SS')", false);

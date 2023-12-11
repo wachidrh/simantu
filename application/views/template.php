@@ -196,9 +196,9 @@
 											</span>
 											<span class="menu-title">Settings</span><span class="menu-arrow"></span>
 										</span>
-										<div class="menu-sub menu-sub-accordion">
+										<div class="menu-sub menu-sub-accordion <?= $this->uri->segment(1) == 'setup' ? 'show' : ''; ?>">
 											<div class="menu-item">
-												<a class="menu-link" href="<?php echo base_url() . '#'; ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Setup Wilayah</span></a>
+												<a class="menu-link <?= current_url() == base_url('setup/peralatan') ? 'active' : ''; ?>" href="<?= base_url('setup/peralatan'); ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Setup Peralatan</span></a>
 											</div>
 										</div>
 									</div>
@@ -210,16 +210,19 @@
 										</span>
 										<div class="menu-sub menu-sub-accordion">
 											<div class="menu-item">
-												<a class="menu-link <?= current_url() == base_url('master/peralatan') ? 'active' : ''; ?>" href="<?php echo base_url() . 'master/peralatan'; ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Peralatan</span></a>
+												<a class="menu-link <?= current_url() == base_url('master/peralatan') ? 'active' : ''; ?>" href="<?php echo base_url('master/peralatan'); ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Peralatan</span></a>
 											</div>
 											<div class="menu-item">
-												<a class="menu-link <?= current_url() == base_url('master/item-peralatan') ? 'active' : ''; ?>" href="<?php echo base_url() . 'master/item-peralatan'; ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Item Peralatan</span></a>
+												<a class="menu-link <?= current_url() == base_url('master/item-peralatan') ? 'active' : ''; ?>" href="<?php echo base_url('master/item-peralatan'); ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Item Peralatan</span></a>
 											</div>
 											<div class="menu-item">
-												<a class="menu-link <?= current_url() == base_url('master/kriteria') ? 'active' : ''; ?>" href="<?php echo base_url() . 'master/kriteria'; ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Kriteria Pemeriksaan</span></a>
+												<a class="menu-link <?= current_url() == base_url('master/kriteria') ? 'active' : ''; ?>" href="<?php echo base_url('master/kriteria'); ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Kriteria Pemeriksaan</span></a>
 											</div>
 											<div class="menu-item">
-												<a class="menu-link <?= current_url() == base_url('master/metode') ? 'active' : ''; ?>" href="<?php echo base_url() . 'master/metode'; ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Metode Pemeriksaan</span></a>
+												<a class="menu-link <?= current_url() == base_url('master/metode') ? 'active' : ''; ?>" href="<?php echo base_url('master/metode'); ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Metode Pemeriksaan</span></a>
+											</div>
+											<div class="menu-item">
+												<a class="menu-link <?= current_url() == base_url('master/bangunan') ? 'active' : ''; ?>" href="<?php echo base_url('master/bangunan'); ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Jenis Bangunan</span></a>
 											</div>
 										</div>
 									</div>

@@ -5,8 +5,8 @@ var KTMPeralatanList = (function () {
 
 	return {
 		init: function () {
-			var url = hostUrl + "master/peralatan/get-master-peralatan";
-			table = $("#kt_m_peralatan_table").DataTable({
+			var url = hostUrl + "master/bangunan/list";
+			table = $("#kt_m_bangunan_table").DataTable({
 				responsive: true,
 				processing: true,
 				serverSide: true,
@@ -18,8 +18,8 @@ var KTMPeralatanList = (function () {
 				bPaginate: true,
 				bProcessing: false,
 				language: {
-					emptyTable: "Data master peralatan belum tersedia",
-					zeroRecords: "Data master peralatan tidak ditemukan",
+					emptyTable: "Data master jenis belum tersedia",
+					zeroRecords: "Data master jenis tidak ditemukan",
 					paginate: {
 						previous: "<i class='fa fa-angle-left' aria-hidden='true'></i>",
 						next: " <i class='fa fa-angle-right' aria-hidden='true'></i> ",
@@ -64,15 +64,15 @@ var KTMPeralatanList = (function () {
 				table.ajax.reload(null, false);
 			});
 
-			// start tambah master jenis peralatan
-			const formTambahMPeralatan = document.getElementById("form-tambah-m-jenis-peralatan");
-			var valid_form_tambah = FormValidation.formValidation(formTambahMPeralatan, {
+			// start tambah master jenis bangunan
+			const formTambahMBangunan = document.getElementById("form-tambah-m-bangunan");
+			var valid_form_tambah = FormValidation.formValidation(formTambahMBangunan, {
 				framework: "bootstrap",
 				fields: {
-					nama_jenis_peralatan: {
+					nama_bangunan: {
 						validators: {
 							notEmpty: {
-								message: "Nama jenis peralatan harus diisi",
+								message: "Jenis bangunan harus diisi",
 							},
 						},
 					},
@@ -88,46 +88,46 @@ var KTMPeralatanList = (function () {
 				},
 			});
 
-			const submitSimpanMJenisPeralatan = document.getElementById("btn-submit-tambah-m-jenis-peralatan");
-			submitSimpanMJenisPeralatan.addEventListener("click", function (e) {
-				formTambahMPeralatan.addEventListener('submit', function(event) {
+			const submitSimpanMBangunan = document.getElementById("btn-submit-tambah-m-bangunan");
+			submitSimpanMBangunan.addEventListener("click", function (e) {
+				formTambahMBangunan.addEventListener('submit', function(event) {
 					event.preventDefault();
-					formTambahMPeralatan.submit();
+					formTambahMBangunan.submit();
 				});
 				
 				if (valid_form_tambah) {
 					valid_form_tambah.validate().then(function (status) {
 						if (status == "Valid") {
-							submitSimpanMJenisPeralatan.setAttribute("data-kt-indicator", "on");
-							submitSimpanMJenisPeralatan.disabled = true;
+							submitSimpanMBangunan.setAttribute("data-kt-indicator", "on");
+							submitSimpanMBangunan.disabled = true;
 
-							var formData = new FormData(formTambahMPeralatan);
+							var formData = new FormData(formTambahMBangunan);
 							$.ajax({
 								type: "POST",
-								url: hostUrl + "master/peralatan/store",
+								url: hostUrl + "master/bangunan/store",
 								data: formData,
 								contentType: false,
 								cache: false,
 								processData: false,
 								beforeSend: function (data) {
-									submitSimpanMJenisPeralatan.setAttribute("data-kt-indicator", "on");
-									submitSimpanMJenisPeralatan.disabled = true;
+									submitSimpanMBangunan.setAttribute("data-kt-indicator", "on");
+									submitSimpanMBangunan.disabled = true;
 								},
 								success: function (data) {
 									const result = JSON.parse(data);
 									if (result.status == true) {
-										$("#modal_add_peralatan").modal("hide");
+										$("#modal_add_bangunan").modal("hide");
 										Swal.fire({
-											text: "Data Pengguna berhasil ditambahkan",
+											text: "Data jenis bangunan berhasil ditambahkan",
 											icon: "success",
 											confirmButtonColor: "#3085d6",
 											confirmButtonText: "Ok",
 										});
 										table.ajax.reload(null, false);
 
-										document.getElementById("form-tambah-m-jenis-peralatan").reset();
+										formTambahMBangunan.reset();
 									} else {
-										toastr.warning("Data Pengguna gagal ditambahkan", "Gagal!", {
+										toastr.warning("Data jenis bangunan gagal ditambahkan", "Gagal!", {
 											timeOut: 2000,
 											extendedTimeOut: 0,
 											closeButton: true,
@@ -136,12 +136,12 @@ var KTMPeralatanList = (function () {
 									}
 								},
 								complete: function (data) {
-									submitSimpanMJenisPeralatan.setAttribute("data-kt-indicator", "off");
-									submitSimpanMJenisPeralatan.disabled = false;
+									submitSimpanMBangunan.setAttribute("data-kt-indicator", "off");
+									submitSimpanMBangunan.disabled = false;
 								},
 								error: function (data) {
-									submitSimpanMJenisPeralatan.setAttribute("data-kt-indicator", "off");
-									submitSimpanMJenisPeralatan.disabled = false;
+									submitSimpanMBangunan.setAttribute("data-kt-indicator", "off");
+									submitSimpanMBangunan.disabled = false;
 
 									toastr.error("Terjadi kesalahan sistem.", "Gagal!", {
 										timeOut: 2000,
@@ -155,17 +155,17 @@ var KTMPeralatanList = (function () {
 					});
 				}
 			});
-			// end tambah master jenis peralatan
+			// end tambah master metode pemeriksaan
 
 			// Edit Asal Pengguna
-			$(document).on("click", ".ubah-jenis-peralatan", function (e) {
+			$(document).on("click", ".ubah-bangunan", function (e) {
 				e.preventDefault();
-				var id_jenis_peralatan = $(this).attr("data-id");
+				var id_jenis_bangunan = $(this).attr("data-id");
 				
 				$.ajax({
-					url: hostUrl + "master/peralatan/lookup",
+					url: hostUrl + "master/bangunan/lookup",
 					type: "POST",
-					data: { id_jenis_peralatan: id_jenis_peralatan },
+					data: { id_jenis_bangunan: id_jenis_bangunan },
 					dataType: "json",
 					beforeSend: function () {
 						KTApp.showPageLoading();
@@ -173,10 +173,10 @@ var KTMPeralatanList = (function () {
 					success: function (response) {
 						if (response.status == true && Object.keys(response.data).length !== 0) {
 
-							$("[name='edit_id_jenis_peralatan']").val(id_jenis_peralatan);
-							$("[name='edit_nama_jenis_peralatan']").val(response.data.nama);
+							$("[name='edit_id_jenis_bangunan']").val(id_jenis_bangunan);
+							$("[name='edit_nama_bangunan']").val(response.data.nama_bangunan);
 			
-							$("#modal_edit_peralatan").modal("show");
+							$("#modal_edit_bangunan").modal("show");
 						} else {
 							toastr.error("Terjadi kesalahan saat memuat data.", "Gagal!", {
 								timeOut: 2000,
@@ -200,14 +200,14 @@ var KTMPeralatanList = (function () {
 				});
 			});			
 
-			const formEditJenisPeralatan = document.getElementById("form-edit-m-jenis-peralatan");
-			var valid_update = FormValidation.formValidation(formEditJenisPeralatan, {
+			const formEditBangunan = document.getElementById("form-edit-m-bangunan");
+			var valid_update = FormValidation.formValidation(formEditBangunan, {
 				framework: "bootstrap",
 				fields: {
-					edit_nama_jenis_peralatan: {
+					edit_nama_bangunan: {
 						validators: {
 							notEmpty: {
-								message: "Nama jenis peralatan harus diisi",
+								message: "Jenis bangunan harus diisi",
 							},
 						},
 					},
@@ -223,46 +223,46 @@ var KTMPeralatanList = (function () {
 				},
 			});
 
-			const submitUpdateMJenisPeralatan = document.getElementById("btn-submit-edit-m-jenis-peralatan");
-			submitUpdateMJenisPeralatan.addEventListener("click", function (e) {
-				formEditJenisPeralatan.addEventListener('submit', function(event) {
+			const submitUpdateMBangunan = document.getElementById("btn-submit-edit-m-bangunan");
+			submitUpdateMBangunan.addEventListener("click", function (e) {
+				formEditBangunan.addEventListener('submit', function(event) {
 					event.preventDefault();
-					formEditJenisPeralatan.submit();
+					formEditBangunan.submit();
 				});
 
 				if (valid_update) {
 					valid_update.validate().then(function (status) {
 						if (status == "Valid") {
-							submitUpdateMJenisPeralatan.setAttribute("data-kt-indicator", "on");
-							submitUpdateMJenisPeralatan.disabled = true;
+							submitUpdateMBangunan.setAttribute("data-kt-indicator", "on");
+							submitUpdateMBangunan.disabled = true;
 
-							var formData = new FormData(formEditJenisPeralatan);
+							var formData = new FormData(formEditBangunan);
 							$.ajax({
 								type: "POST",
-								url: hostUrl + "master/peralatan/update",
+								url: hostUrl + "master/bangunan/update",
 								data: formData,
 								contentType: false,
 								cache: false,
 								processData: false,
 								beforeSend: function (data) {
-									submitUpdateMJenisPeralatan.setAttribute("data-kt-indicator", "on");
-									submitUpdateMJenisPeralatan.disabled = true;
+									submitUpdateMBangunan.setAttribute("data-kt-indicator", "on");
+									submitUpdateMBangunan.disabled = true;
 								},
 								success: function (data) {
 									const result = JSON.parse(data);
 									if (result.status == true) {
-										$("#modal_edit_peralatan").modal("hide");
+										$("#modal_edit_bangunan").modal("hide");
 										Swal.fire({
-											text: "Data pengguna berhasil diperbarui",
+											text: "Data jenis bangunan berhasil diperbarui",
 											icon: "success",
 											confirmButtonColor: "#3085d6",
 											confirmButtonText: "Ok",
 										});
 										table.ajax.reload(null, false);
 
-										formEditJenisPeralatan.reset();
+										formEditBangunan.reset();
 									} else {
-										toastr.warning("Data pengguna gagal diperbarui", "Gagal!", {
+										toastr.warning("Data jenis bangunan gagal diperbarui", "Gagal!", {
 											timeOut: 2000,
 											extendedTimeOut: 0,
 											closeButton: true,
@@ -271,12 +271,12 @@ var KTMPeralatanList = (function () {
 									}
 								},
 								complete: function (data) {
-									submitUpdateMJenisPeralatan.setAttribute("data-kt-indicator", "off");
-									submitUpdateMJenisPeralatan.disabled = false;
+									submitUpdateMBangunan.setAttribute("data-kt-indicator", "off");
+									submitUpdateMBangunan.disabled = false;
 								},
 								error: function (data) {
-									submitUpdateMJenisPeralatan.setAttribute("data-kt-indicator", "off");
-									submitUpdateMJenisPeralatan.disabled = false;
+									submitUpdateMBangunan.setAttribute("data-kt-indicator", "off");
+									submitUpdateMBangunan.disabled = false;
 
 									toastr.error("Terjadi kesalahan sistem.", "Gagal!", {
 										timeOut: 2000,
@@ -292,13 +292,13 @@ var KTMPeralatanList = (function () {
 			});
 			// Edit Asal Pengguna
 
-			$(document).on("click", ".hapus-jenis-peralatan", function (e) {
+			$(document).on("click", ".hapus-bangunan", function (e) {
 				e.preventDefault();
 
-				var id_jenis_peralatan = $(this).attr("data-id");
+				var id_jenis_bangunan = $(this).attr("data-id");
 
 				Swal.fire({
-					text: "Apakah Anda yakin ingin menghapus jenis peralatan yang dipilih?",
+					text: "Apakah Anda yakin ingin menghapus jenis bangunan yang dipilih?",
 					icon: "warning",
 					showCancelButton: true,
 					buttonsStyling: false,
@@ -311,9 +311,9 @@ var KTMPeralatanList = (function () {
 				}).then(function (result) {
 					if (result.isConfirmed) {
 						$.ajax({
-							url: hostUrl + "master/peralatan/delete",
+							url: hostUrl + "master/bangunan/delete",
 							type: "POST",
-							data: { "id_jenis_peralatan[]": id_jenis_peralatan },
+							data: { "id_jenis_bangunan[]": id_jenis_bangunan },
 							beforeSend: function () {
 								KTApp.showPageLoading();
 							},
@@ -322,7 +322,7 @@ var KTMPeralatanList = (function () {
 								if (response.status == true) {
 									table.ajax.reload(null, false);
 									Swal.fire({
-										text: "Anda telah menghapus semua jenis peralatan terpilih!",
+										text: "Anda telah menghapus semua jenis bangunan terpilih!",
 										icon: "success",
 										buttonsStyling: false,
 										confirmButtonText: "Ok, mengerti!",

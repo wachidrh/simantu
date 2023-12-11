@@ -60,7 +60,7 @@ class Metode extends CI_Controller
 	{
 		$input = array(
 			'id_metode' => last_id('m_metode_pemeriksaan', 'id_metode'),
-			'metode' => $this->security->xss_clean(strtolower($this->input->post('metode')))
+			'metode' => $this->security->xss_clean($this->input->post('metode'))
 		);
 		$this->db->set('"created_at"', "TO_DATE('$this->now', 'YYYY-MM-DD HH24:MI:SS')", false);
 		$this->db->set('"updated_at"', "TO_DATE('$this->now', 'YYYY-MM-DD HH24:MI:SS')", false);

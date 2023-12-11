@@ -102,7 +102,6 @@ var KTMPeralatanList = (function () {
 							submitSimpanMItemPeralatan.disabled = true;
 
 							var formData = new FormData(formTambahMItemPeralatan);
-							console.log(formData);
 							$.ajax({
 								type: "POST",
 								url: hostUrl + "master/item-peralatan/store",

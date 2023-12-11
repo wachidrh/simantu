@@ -19,8 +19,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 |
 */
 $config['re_keys'] = array(
-    'site_key'        => '6LegDtUoAAAAAC9CgTqmFNFot1z5fGF6MVod2DqW',
-    'secret_key'    => '6LegDtUoAAAAAB-3rdI-C66kUtBXcJPnXmCMAUJl'
+    'site_key'        => '6LcGpi0pAAAAAMFdVV5w_17f0hFNVzyhQZNGdYzK',
+    'secret_key'    => '6LcGpi0pAAAAAAEDuTugyu8uPw19yGjCAA1qbTxY'
 );
 
 /*

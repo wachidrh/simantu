@@ -60,7 +60,7 @@ class Itemperalatan extends CI_Controller
 	{
 		$input = array(
 			'id_item_peralatan' => last_id('m_item_peralatan', 'id_item_peralatan'),
-			'nama_item' => $this->security->xss_clean(strtolower($this->input->post('nama_item_peralatan')))
+			'nama_item' => $this->security->xss_clean($this->input->post('nama_item_peralatan'))
 		);
 		$this->db->set('"created_at"', "TO_DATE('$this->now', 'YYYY-MM-DD HH24:MI:SS')", false);
 		$this->db->set('"updated_at"', "TO_DATE('$this->now', 'YYYY-MM-DD HH24:MI:SS')", false);

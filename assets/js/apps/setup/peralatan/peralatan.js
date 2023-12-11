@@ -1,12 +1,12 @@
 "use strict";
 
-var KTMPeralatanList = (function () {
+var KTPeralatanList = (function () {
 	var t, e, o, n, table;
 
 	return {
 		init: function () {
-			var url = hostUrl + "master/peralatan/get-master-peralatan";
-			table = $("#kt_m_peralatan_table").DataTable({
+			var url = hostUrl + "setup/peralatan/list";
+			table = $("#kt_peralatan_table").DataTable({
 				responsive: true,
 				processing: true,
 				serverSide: true,
@@ -18,8 +18,8 @@ var KTMPeralatanList = (function () {
 				bPaginate: true,
 				bProcessing: false,
 				language: {
-					emptyTable: "Data master peralatan belum tersedia",
-					zeroRecords: "Data master peralatan tidak ditemukan",
+					emptyTable: "Data peralatan belum tersedia",
+					zeroRecords: "Data peralatan tidak ditemukan",
 					paginate: {
 						previous: "<i class='fa fa-angle-left' aria-hidden='true'></i>",
 						next: " <i class='fa fa-angle-right' aria-hidden='true'></i> ",
@@ -54,7 +54,17 @@ var KTMPeralatanList = (function () {
 						targets: [2],
 						orderable: false,
 						class: "align-top",
-					}
+					},
+					{
+						targets: [3],
+						orderable: false,
+						class: "align-top",
+					},
+					{
+						targets: [4],
+						orderable: false,
+						class: "align-top",
+					},
 				],
 
 				dom: '<"top"l>rt<"bottom left"pi><"caption right"><"clear">',
@@ -65,14 +75,23 @@ var KTMPeralatanList = (function () {
 			});
 
 			// start tambah master jenis peralatan
-			const formTambahMPeralatan = document.getElementById("form-tambah-m-jenis-peralatan");
-			var valid_form_tambah = FormValidation.formValidation(formTambahMPeralatan, {
+			const formTambahPeralatan = document.getElementById("form-tambah-peralatan");
+			var valid_form_tambah = FormValidation.formValidation(formTambahPeralatan, {
 				framework: "bootstrap",
 				fields: {
-					nama_jenis_peralatan: {
+					id_jenis_peralatan: {
 						validators: {
 							notEmpty: {
 								message: "Nama jenis peralatan harus diisi",
+							},
+						},
+					},
+				},
+				fields: {
+					id_jenis_bangunan: {
+						validators: {
+							notEmpty: {
+								message: "Nama jenis bangunan harus diisi",
 							},
 						},
 					},
@@ -88,46 +107,46 @@ var KTMPeralatanList = (function () {
 				},
 			});
 
-			const submitSimpanMJenisPeralatan = document.getElementById("btn-submit-tambah-m-jenis-peralatan");
-			submitSimpanMJenisPeralatan.addEventListener("click", function (e) {
-				formTambahMPeralatan.addEventListener('submit', function(event) {
+			const submitSimpanPeralatan = document.getElementById("btn-submit-tambah-peralatan");
+			submitSimpanPeralatan.addEventListener("click", function (e) {
+				formTambahPeralatan.addEventListener('submit', function(event) {
 					event.preventDefault();
-					formTambahMPeralatan.submit();
+					formTambahPeralatan.submit();
 				});
 				
 				if (valid_form_tambah) {
 					valid_form_tambah.validate().then(function (status) {
 						if (status == "Valid") {
-							submitSimpanMJenisPeralatan.setAttribute("data-kt-indicator", "on");
-							submitSimpanMJenisPeralatan.disabled = true;
+							submitSimpanPeralatan.setAttribute("data-kt-indicator", "on");
+							submitSimpanPeralatan.disabled = true;
 
-							var formData = new FormData(formTambahMPeralatan);
+							var formData = new FormData(formTambahPeralatan);
 							$.ajax({
 								type: "POST",
-								url: hostUrl + "master/peralatan/store",
+								url: hostUrl + "setup/peralatan/store",
 								data: formData,
 								contentType: false,
 								cache: false,
 								processData: false,
 								beforeSend: function (data) {
-									submitSimpanMJenisPeralatan.setAttribute("data-kt-indicator", "on");
-									submitSimpanMJenisPeralatan.disabled = true;
+									submitSimpanPeralatan.setAttribute("data-kt-indicator", "on");
+									submitSimpanPeralatan.disabled = true;
 								},
 								success: function (data) {
 									const result = JSON.parse(data);
 									if (result.status == true) {
 										$("#modal_add_peralatan").modal("hide");
 										Swal.fire({
-											text: "Data Pengguna berhasil ditambahkan",
+											text: "Data peratalatan berhasil ditambahkan",
 											icon: "success",
 											confirmButtonColor: "#3085d6",
 											confirmButtonText: "Ok",
 										});
 										table.ajax.reload(null, false);
 
-										document.getElementById("form-tambah-m-jenis-peralatan").reset();
+										document.getElementById("form-tambah-peralatan").reset();
 									} else {
-										toastr.warning("Data Pengguna gagal ditambahkan", "Gagal!", {
+										toastr.warning("Data peralatan gagal ditambahkan", "Gagal!", {
 											timeOut: 2000,
 											extendedTimeOut: 0,
 											closeButton: true,
@@ -136,12 +155,12 @@ var KTMPeralatanList = (function () {
 									}
 								},
 								complete: function (data) {
-									submitSimpanMJenisPeralatan.setAttribute("data-kt-indicator", "off");
-									submitSimpanMJenisPeralatan.disabled = false;
+									submitSimpanPeralatan.setAttribute("data-kt-indicator", "off");
+									submitSimpanPeralatan.disabled = false;
 								},
 								error: function (data) {
-									submitSimpanMJenisPeralatan.setAttribute("data-kt-indicator", "off");
-									submitSimpanMJenisPeralatan.disabled = false;
+									submitSimpanPeralatan.setAttribute("data-kt-indicator", "off");
+									submitSimpanPeralatan.disabled = false;
 
 									toastr.error("Terjadi kesalahan sistem.", "Gagal!", {
 										timeOut: 2000,
@@ -158,14 +177,14 @@ var KTMPeralatanList = (function () {
 			// end tambah master jenis peralatan
 
 			// Edit Asal Pengguna
-			$(document).on("click", ".ubah-jenis-peralatan", function (e) {
+			$(document).on("click", ".ubah-peralatan", function (e) {
 				e.preventDefault();
-				var id_jenis_peralatan = $(this).attr("data-id");
+				var id_peralatan = $(this).attr("data-id");
 				
 				$.ajax({
-					url: hostUrl + "master/peralatan/lookup",
+					url: hostUrl + "setup/peralatan/lookup",
 					type: "POST",
-					data: { id_jenis_peralatan: id_jenis_peralatan },
+					data: { id_peralatan: id_peralatan },
 					dataType: "json",
 					beforeSend: function () {
 						KTApp.showPageLoading();
@@ -173,8 +192,10 @@ var KTMPeralatanList = (function () {
 					success: function (response) {
 						if (response.status == true && Object.keys(response.data).length !== 0) {
 
-							$("[name='edit_id_jenis_peralatan']").val(id_jenis_peralatan);
-							$("[name='edit_nama_jenis_peralatan']").val(response.data.nama);
+							$("[name='edit_id_peralatan']").val(id_peralatan);
+							$("[name='edit_id_jenis_peralatan']").val(response.data.id_m_jenis_peralatan).trigger("change");
+							$("[name='edit_id_jenis_bangunan']").val(response.data.id_m_jenis_bangunan).trigger("change");
+							$("[name='edit_nfc_serial_number']").val(response.data.nfc_serial_number);
 			
 							$("#modal_edit_peralatan").modal("show");
 						} else {
@@ -198,16 +219,36 @@ var KTMPeralatanList = (function () {
 						});
 					},
 				});
-			});			
+			});	
+			
+			if ("NDEFReader" in window) { 
+				read()
+			 } else{
+				Swal.fire({
+					text: "Device tidak support NFC Reader",
+					icon: "error",
+					confirmButtonColor: "#3085d6",
+					confirmButtonText: "Ok",
+				});
+			}
 
-			const formEditJenisPeralatan = document.getElementById("form-edit-m-jenis-peralatan");
-			var valid_update = FormValidation.formValidation(formEditJenisPeralatan, {
+			const formEditPeralatan = document.getElementById("form-edit-peralatan");
+			var valid_update = FormValidation.formValidation(formEditPeralatan, {
 				framework: "bootstrap",
 				fields: {
-					edit_nama_jenis_peralatan: {
+					eidt_id_jenis_peralatan: {
 						validators: {
 							notEmpty: {
 								message: "Nama jenis peralatan harus diisi",
+							},
+						},
+					},
+				},
+				fields: {
+					eidt_id_jenis_bangunan: {
+						validators: {
+							notEmpty: {
+								message: "Nama jenis bangunan harus diisi",
 							},
 						},
 					},
@@ -223,46 +264,46 @@ var KTMPeralatanList = (function () {
 				},
 			});
 
-			const submitUpdateMJenisPeralatan = document.getElementById("btn-submit-edit-m-jenis-peralatan");
-			submitUpdateMJenisPeralatan.addEventListener("click", function (e) {
-				formEditJenisPeralatan.addEventListener('submit', function(event) {
+			const submitUpdatePeralatan = document.getElementById("btn-submit-edit-peralatan");
+			submitUpdatePeralatan.addEventListener("click", function (e) {
+				formEditPeralatan.addEventListener('submit', function(event) {
 					event.preventDefault();
-					formEditJenisPeralatan.submit();
+					formEditPeralatan.submit();
 				});
 
 				if (valid_update) {
 					valid_update.validate().then(function (status) {
 						if (status == "Valid") {
-							submitUpdateMJenisPeralatan.setAttribute("data-kt-indicator", "on");
-							submitUpdateMJenisPeralatan.disabled = true;
+							submitUpdatePeralatan.setAttribute("data-kt-indicator", "on");
+							submitUpdatePeralatan.disabled = true;
 
-							var formData = new FormData(formEditJenisPeralatan);
+							var formData = new FormData(formEditPeralatan);
 							$.ajax({
 								type: "POST",
-								url: hostUrl + "master/peralatan/update",
+								url: hostUrl + "setup/peralatan/update",
 								data: formData,
 								contentType: false,
 								cache: false,
 								processData: false,
 								beforeSend: function (data) {
-									submitUpdateMJenisPeralatan.setAttribute("data-kt-indicator", "on");
-									submitUpdateMJenisPeralatan.disabled = true;
+									submitUpdatePeralatan.setAttribute("data-kt-indicator", "on");
+									submitUpdatePeralatan.disabled = true;
 								},
 								success: function (data) {
 									const result = JSON.parse(data);
 									if (result.status == true) {
 										$("#modal_edit_peralatan").modal("hide");
 										Swal.fire({
-											text: "Data pengguna berhasil diperbarui",
+											text: "Data peralatan berhasil diperbarui",
 											icon: "success",
 											confirmButtonColor: "#3085d6",
 											confirmButtonText: "Ok",
 										});
 										table.ajax.reload(null, false);
 
-										formEditJenisPeralatan.reset();
+										formEditPeralatan.reset();
 									} else {
-										toastr.warning("Data pengguna gagal diperbarui", "Gagal!", {
+										toastr.warning("Data peralatan gagal diperbarui", "Gagal!", {
 											timeOut: 2000,
 											extendedTimeOut: 0,
 											closeButton: true,
@@ -271,12 +312,12 @@ var KTMPeralatanList = (function () {
 									}
 								},
 								complete: function (data) {
-									submitUpdateMJenisPeralatan.setAttribute("data-kt-indicator", "off");
-									submitUpdateMJenisPeralatan.disabled = false;
+									submitUpdatePeralatan.setAttribute("data-kt-indicator", "off");
+									submitUpdatePeralatan.disabled = false;
 								},
 								error: function (data) {
-									submitUpdateMJenisPeralatan.setAttribute("data-kt-indicator", "off");
-									submitUpdateMJenisPeralatan.disabled = false;
+									submitUpdatePeralatan.setAttribute("data-kt-indicator", "off");
+									submitUpdatePeralatan.disabled = false;
 
 									toastr.error("Terjadi kesalahan sistem.", "Gagal!", {
 										timeOut: 2000,
@@ -292,13 +333,13 @@ var KTMPeralatanList = (function () {
 			});
 			// Edit Asal Pengguna
 
-			$(document).on("click", ".hapus-jenis-peralatan", function (e) {
+			$(document).on("click", ".hapus-peralatan", function (e) {
 				e.preventDefault();
 
-				var id_jenis_peralatan = $(this).attr("data-id");
+				var id_peralatan = $(this).attr("data-id");
 
 				Swal.fire({
-					text: "Apakah Anda yakin ingin menghapus jenis peralatan yang dipilih?",
+					text: "Apakah Anda yakin ingin menghapus peralatan yang dipilih?",
 					icon: "warning",
 					showCancelButton: true,
 					buttonsStyling: false,
@@ -311,9 +352,9 @@ var KTMPeralatanList = (function () {
 				}).then(function (result) {
 					if (result.isConfirmed) {
 						$.ajax({
-							url: hostUrl + "master/peralatan/delete",
+							url: hostUrl + "setup/peralatan/delete",
 							type: "POST",
-							data: { "id_jenis_peralatan[]": id_jenis_peralatan },
+							data: { "id_peralatan[]": id_peralatan },
 							beforeSend: function () {
 								KTApp.showPageLoading();
 							},
@@ -322,7 +363,7 @@ var KTMPeralatanList = (function () {
 								if (response.status == true) {
 									table.ajax.reload(null, false);
 									Swal.fire({
-										text: "Anda telah menghapus semua jenis peralatan terpilih!",
+										text: "Anda telah menghapus semua peralatan terpilih!",
 										icon: "success",
 										buttonsStyling: false,
 										confirmButtonText: "Ok, mengerti!",
@@ -372,7 +413,39 @@ var KTMPeralatanList = (function () {
 		},
 	};
 })();
+function read() {
+	const ndef = new NDEFReader();
+	ndef.scan().then(() => {
+		console.log("Scan started successfully.");
+		ndef.onreadingerror = (event) => {
+		  console.log("Error! Cannot read data from the NFC tag. Try a different one?");
+		};
+		ndef.onreading = (event) => {
+		  console.log(event.serialNumber);
+		  $("[name='nfc_serial_number']").val(event.serialNumber);
+		  $("[name='edit_nfc_serial_number']").val(event.serialNumber);
+		};
+	  }).catch(error => {
+		console.log(`Error! Scan failed to start: ${error}.`);
+	  });
+}
+
+const btnModalTambahPeralatan = document.getElementById("btn-add-peralatan");
+btnModalTambahPeralatan.addEventListener("click", function () {
+	if ("NDEFReader" in window) { 
+		read()
+	 } else{
+		Swal.fire({
+			text: "Device tidak support NFC Reader",
+			icon: "error",
+			confirmButtonColor: "#3085d6",
+			confirmButtonText: "Ok",
+		});
+	}
+});
+
+
 
 $(document).ready(function () {
-	KTMPeralatanList.init();
+	KTPeralatanList.init();
 });

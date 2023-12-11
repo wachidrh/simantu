@@ -60,10 +60,10 @@ class Peralatan extends CI_Controller
 	{
 		$input = array(
 			'id_jenis_peralatan' => last_id('m_jenis_peralatan', 'id_jenis_peralatan'),
-			'nama' => $this->security->xss_clean(strtolower($this->input->post('nama_jenis_peralatan')))
+			'nama' => $this->security->xss_clean($this->input->post('nama_jenis_peralatan')),
+			'created_at' => $this->timestamp(),
+			'updated_at' => $this->timestamp(),
 		);
-		$this->db->set('"created_at"', "TO_DATE('$this->now', 'YYYY-MM-DD HH24:MI:SS')", false);
-		$this->db->set('"updated_at"', "TO_DATE('$this->now', 'YYYY-MM-DD HH24:MI:SS')", false);
 		if($this->peralatan->store($input)){
 			$result = array('status'  => true, 'messages' => 'Jenis peralatan baru ditambahkan');
 		}else {
