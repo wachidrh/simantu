@@ -226,6 +226,21 @@
 											</div>
 										</div>
 									</div>
+									<div data-kt-menu-trigger="click" class="menu-item menu-accordion <?= $this->uri->segment(1) == 'jadwal' ? 'show' : ''; ?>">
+										<span class="menu-link">
+											<span class="menu-icon"><i class="fa-light fa-calendar fs-2"></i>
+											</span>
+											<span class="menu-title">Data Jadwal</span><span class="menu-arrow"></span>
+										</span>
+										<div class="menu-sub menu-sub-accordion">
+											<div class="menu-item">
+												<a class="menu-link <?= current_url() == base_url('jadwal/elektromekanis') ? 'active' : ''; ?>" href="<?php echo base_url('jadwal/elektromekanis'); ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Elektromekanis</span></a>
+											</div>
+											<div class="menu-item">
+												<a class="menu-link <?= current_url() == base_url('jadwal/pantauukur') ? 'active' : ''; ?>" href="<?php echo base_url('jadwal/pantauukur'); ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Pantau Ukur</span></a>
+											</div>
+										</div>
+									</div>
 									<div class="menu-item">
 										<a class="menu-link <?= current_url() == base_url('pengguna/list-pengguna') ? 'active' : ''; ?>" href="<?= base_url('pengguna/list-pengguna'); ?>">
 											<span class="menu-icon"><i class="ki-outline ki-profile-user fs-2"></i></span>
@@ -273,6 +288,8 @@
 	<?php if (isset($javascript) && $javascript != '') { ?>
 		<script src="<?php echo base_url() . 'assets/js/apps/' . $javascript; ?>?time=<?php echo time(); ?>"></script>
 	<?php } ?>
+	<script src="<?php echo base_url() . 'assets/plugins/custom/formrepeater/formrepeater.bundle.js'; ?>"></script>
+
 </body>
 
 </html>

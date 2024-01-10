@@ -60,3 +60,6 @@ $route['setup/peralatan/store'] = 'setup_peralatan/peralatan/store';
 $route['setup/peralatan/lookup'] = 'setup_peralatan/peralatan/lookup';
 $route['setup/peralatan/update'] = 'setup_peralatan/peralatan/update';
 $route['setup/peralatan/delete'] = 'setup_peralatan/peralatan/delete';
+
+// jadwal
+$route['jadwal/elektromekanis/detail/(:any)'] = 'jadwal/elektromekanis/show/$1';
