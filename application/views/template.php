@@ -241,6 +241,21 @@
 											</div>
 										</div>
 									</div>
+									<div data-kt-menu-trigger="click" class="menu-item menu-accordion <?= $this->uri->segment(1) == 'pemeriksaan' ? 'show' : ''; ?>">
+										<span class="menu-link">
+											<span class="menu-icon"><i class="fa-light fa-file-lines fs-2"></i>
+											</span>
+											<span class="menu-title">Data Pemeriksaan</span><span class="menu-arrow"></span>
+										</span>
+										<div class="menu-sub menu-sub-accordion">
+											<div class="menu-item">
+												<a class="menu-link <?= current_url() == base_url('pemeriksaan/elektromekanis') ? 'active' : ''; ?>" href="<?php echo base_url('pemeriksaan/elektromekanis'); ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Elektromekanis</span></a>
+											</div>
+											<div class="menu-item">
+												<a class="menu-link <?= current_url() == base_url('pemeriksaan/pantauukur') ? 'active' : ''; ?>" href="<?php echo base_url('pemeriksaan/pantauukur'); ?>"><span class="menu-bullet"><span class="bullet bullet-dot"></span></span><span class="menu-title">Pantau Ukur</span></a>
+											</div>
+										</div>
+									</div>
 									<div class="menu-item">
 										<a class="menu-link <?= current_url() == base_url('pengguna/list-pengguna') ? 'active' : ''; ?>" href="<?= base_url('pengguna/list-pengguna'); ?>">
 											<span class="menu-icon"><i class="ki-outline ki-profile-user fs-2"></i></span>

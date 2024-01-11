@@ -54,12 +54,16 @@ $route['master/metode/delete'] = 'master_metode/metode/delete';
 // $route['master/bangunan/delete'] = 'master_bangunan/bangunan/delete';
 
 // setup peralatan
-$route['setup/peralatan'] = 'setup_peralatan/peralatan/index';
-$route['setup/peralatan/list'] = 'setup_peralatan/peralatan/list';
-$route['setup/peralatan/store'] = 'setup_peralatan/peralatan/store';
-$route['setup/peralatan/lookup'] = 'setup_peralatan/peralatan/lookup';
-$route['setup/peralatan/update'] = 'setup_peralatan/peralatan/update';
-$route['setup/peralatan/delete'] = 'setup_peralatan/peralatan/delete';
+// $route['setup/peralatan'] = 'setup_peralatan/peralatan/index';
+// $route['setup/peralatan/list'] = 'setup_peralatan/peralatan/list';
+// $route['setup/peralatan/store'] = 'setup_peralatan/peralatan/store';
+// $route['setup/peralatan/lookup'] = 'setup_peralatan/peralatan/lookup';
+// $route['setup/peralatan/update'] = 'setup_peralatan/peralatan/update';
+// $route['setup/peralatan/delete'] = 'setup_peralatan/peralatan/delete';
 
 // jadwal
 $route['jadwal/elektromekanis/detail/(:any)'] = 'jadwal/elektromekanis/show/$1';
+
+// pemeriksaan
+$route['pemeriksaan/eletromekanis/form/(:any)'] = 'pemeriksaan/elektromekanis/form/$1';
+$route['pemeriksaan/elektromekanis/detail/(:any)'] = 'pemeriksaan/elektromekanis/show/$1';

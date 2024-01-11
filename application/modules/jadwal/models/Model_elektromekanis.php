@@ -164,6 +164,7 @@ class Model_elektromekanis extends CI_Model
 			->join('m_jenis_peralatan d', 'a.id_jenis_peralatan = d.id_jenis_peralatan', 'left')
 			->join('m_item_peralatan e', 'a.id_item_peralatan = e.id_item_peralatan', 'left')
 			->where('a.id_jadwal =', (int)$jadwal['id_jadwal'])
+			->order_by('a.id_item_jadwal', 'asc')
 			->get()
 			->result_array();
 

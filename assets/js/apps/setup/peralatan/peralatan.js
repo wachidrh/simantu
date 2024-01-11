@@ -64,7 +64,7 @@ var KTPeralatanList = (function () {
 						targets: [4],
 						orderable: false,
 						class: "align-top",
-					},
+					}
 				],
 
 				dom: '<"top"l>rt<"bottom left"pi><"caption right"><"clear">',
@@ -78,20 +78,26 @@ var KTPeralatanList = (function () {
 			const formTambahPeralatan = document.getElementById("form-tambah-peralatan");
 			var valid_form_tambah = FormValidation.formValidation(formTambahPeralatan, {
 				framework: "bootstrap",
+
 				fields: {
-					id_jenis_peralatan: {
+					'id_m_lokasi': {
 						validators: {
 							notEmpty: {
-								message: "Nama jenis peralatan harus diisi",
+								message: "Lokasi harus diisi",
 							},
 						},
 					},
-				},
-				fields: {
-					id_jenis_bangunan: {
+					'id_jenis_bangunan': {
 						validators: {
 							notEmpty: {
 								message: "Nama jenis bangunan harus diisi",
+							},
+						},
+					},
+					'id_jenis_peralatan': {
+						validators: {
+							notEmpty: {
+								message: "Nama jenis peralatan harus diisi",
 							},
 						},
 					},
@@ -414,19 +420,37 @@ var KTPeralatanList = (function () {
 })();
 function read() {
 	const ndef = new NDEFReader();
+	let nfc_number = ""
 	ndef.scan().then(() => {
 		console.log("Scan started successfully.");
 		ndef.onreadingerror = (event) => {
 		  console.log("Error! Cannot read data from the NFC tag. Try a different one?");
 		};
 		ndef.onreading = (event) => {
-		  console.log(event.serialNumber);
+		  nfc_number = event.serialNumber
 		  $("[name='nfc_serial_number']").val(event.serialNumber);
 		  $("[name='edit_nfc_serial_number']").val(event.serialNumber);
+
+		  let url = "https://simantu.wachid.dev/pemeriksaan/elektromekanis/form/"+event.serialNumber
+			const base_url = window.location.origin
+			if (base_url != 'https://simantu.wachid.dev') {
+				url = base_url+"/simantu/pemeriksaan/elektromekanis/form/"+event.serialNumber
+			}
+			
+			ndef.write({ records: [
+				{ recordType: "url", data: url }
+			]}).then(() => {
+			console.log("Message written.");
+			}).catch(error => {
+			console.log(`Write failed :-( try again: ${error}.`);
+			});
 		};
 	  }).catch(error => {
 		console.log(`Error! Scan failed to start: ${error}.`);
 	  });
+
+	console.log(nfc_number)
+	
 }
 
 const btnModalTambahPeralatan = document.getElementById("btn-add-peralatan");

@@ -15,10 +15,11 @@ class Model_peralatan extends CI_Model
 	public function _get_data_peralatan()
 	{
 		$this->db
-			->select('a.id_peralatan, a.nfc_serial_number, b.nama, c.nama_bangunan, a.created_at, a.updated_at')
+			->select('a.id_peralatan, a.nfc_serial_number, b.nama, c.nama_bangunan, a.created_at, a.updated_at, d.nama_lokasi')
 			->from('tbl_peralatan a')
 			->join('m_jenis_peralatan b', 'a.id_m_jenis_peralatan = b.id_jenis_peralatan', 'left')
 			->join('m_jenis_bangunan c', 'a.id_m_jenis_bangunan = c.id_jenis_bangunan', 'left')
+			->join('m_lokasi d', 'a.id_m_lokasi = d.id_lokasi', 'left')
 			->where('a.is_deleted !=', 1);
 
 		$i = 0;
@@ -113,6 +114,13 @@ class Model_peralatan extends CI_Model
 		return $this->db
 			->where('is_deleted !=', 1)
 			->get('m_jenis_bangunan')
+			->result();
+	}
+
+	public function get_all_m_lokasi()
+	{
+		return $this->db
+			->get('m_lokasi')
 			->result();
 	}
 }
