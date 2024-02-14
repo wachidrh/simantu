@@ -159,15 +159,16 @@ class Elektromekanis extends CI_Controller
 		$this->template->load('template', 'pemeriksaan/elektromekanis/form', $data);
 	}
 
-	public function cek_jadwal() {
+	public function cek_jadwal()
+	{
 		$payloads = $this->security->xss_clean($this->input->post());
-		$periode = urlencode($this->encryption->encrypt($payloads['periode']));
-		$id_bangunan = urlencode($this->encryption->encrypt($payloads['id_bangunan']));
-		$id_peralatan = urlencode($this->encryption->encrypt($payloads['id_peralatan']));
+		$periode = encrypt_url($payloads['periode']);
+		$id_bangunan = encrypt_url($payloads['id_bangunan']);
+		$id_peralatan = encrypt_url($payloads['id_peralatan']);
 		$available = $this->elektromekanis->cek_jadwal($payloads);
 		if ($available > 0) {
-			$result = array('status'  => true, 'messages' => 'pemeriksaan/elektromekanis/form-input/'.$periode.'/'.$id_bangunan.'/'.$id_peralatan);
-		}else{
+			$result = array('status'  => true, 'messages' => 'pemeriksaan/elektromekanis/form-input/' . $periode . '/' . $id_bangunan . '/' . $id_peralatan);
+		} else {
 			$result = array('status'  => false, 'messages' => 'Jadwal tidak tersedia');
 		}
 
@@ -176,9 +177,9 @@ class Elektromekanis extends CI_Controller
 
 	public function form_input($periode, $id_bangunan, $id_peralatan)
 	{
-		$payloads['periode'] = $this->encryption->decrypt(urldecode($periode));
-		$payloads['id_bangunan'] = $this->encryption->decrypt(urldecode($id_bangunan));
-		$payloads['id_peralatan'] = $this->encryption->decrypt(urldecode($id_peralatan));
+		$payloads['periode'] = decrypt_url($periode);
+		$payloads['id_bangunan'] = decrypt_url($id_bangunan);
+		$payloads['id_peralatan'] = decrypt_url($id_peralatan);
 
 		$data['pagetitle'] = 'Form Pemeriksaan Elektromekanis';
 		$data['item_periksa'] = $this->elektromekanis->get_item_periksa($payloads);
