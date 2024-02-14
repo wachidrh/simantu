@@ -1,3 +1,4 @@
+// Handle previous step
 new tempusDominus.TempusDominus(document.getElementById("dt_picker_tahun"), {
 	display: {
 		viewMode: "calendar",
@@ -34,16 +35,72 @@ new tempusDominus.TempusDominus(document.getElementById("dt_picker_tahun"), {
 	},
 });
 
+// Refactored code
 $(document).ready(function () {
 	KTJadwal.init();
-	$('[data-kt-repeater="tgl_periksa"]').flatpickr();
+	// Stepper lement
+	var element = document.querySelector("#stepper_jadwal");
+
+	// Initialize Stepper
+	var stepper = new KTStepper(element);
+
+	// Handle next step
+	stepper.on("kt.stepper.next", function (stepper) {
+		stepper.goNext(); // go next step
+	});
+	stepper.on("kt.stepper.previous", function (stepper) {
+		stepper.goPrevious(); // go previous step
+	});
+
+	let year = $("input[name='tahun_jadwal']").val();
+	let datePrefix = year + "-";
+	let defaultDateRange = { from: year + "-01", to: year + "-04" };
+
+	$("select[name='triwulan']").on("change", function () {
+		switch ($(this).val()) {
+			case "2":
+				defaultDateRange = { from: year + "-04", to: year + "-07" };
+				break;
+			case "3":
+				defaultDateRange = { from: year + "-07", to: year + "-10" };
+				break;
+			case "4":
+				defaultDateRange = {
+					from: year + "-10",
+					to: parseInt(year) + 1 + "-01",
+				};
+				break;
+			default:
+				defaultDateRange = { from: year + "-01", to: year + "-04" };
+				break;
+		}
+
+		$('[data-kt-repeater="tgl_periksa"]').flatpickr({
+			defaultDate: defaultDateRange.from,
+			enable: [defaultDateRange],
+			mode: "range",
+		});
+	});
+
+	$('[data-kt-repeater="tgl_periksa"]').flatpickr({
+		mode: "range",
+		minDate: defaultDateRange.from,
+		enable: [defaultDateRange],
+	});
+
 	$("#repeater_bangunan").repeater({
 		repeaters: [
 			{
 				selector: ".repeater-peralatan",
 				show: function () {
 					$(this).slideDown();
-					$(this).find('[data-kt-repeater="tgl_periksa"]').flatpickr();
+					$(this)
+						.find('[data-kt-repeater="tgl_periksa"]')
+						.flatpickr({
+							minDate: defaultDateRange.from,
+							enable: [defaultDateRange],
+							mode: "range",
+						});
 				},
 
 				hide: function (deleteElement) {
@@ -51,16 +108,20 @@ $(document).ready(function () {
 				},
 				repeaters: [
 					{
-						// Second level of nesting
 						selector: ".repeater-item",
 						show: function () {
 							$(this).slideDown();
-							$(this).find('[data-kt-repeater="tgl_periksa"]').flatpickr();
+							$(this)
+								.find('[data-kt-repeater="tgl_periksa"]')
+								.flatpickr({
+									minDate: defaultDateRange.from,
+									enable: [defaultDateRange],
+									mode: "range",
+								});
 						},
 						hide: function (deleteElement) {
 							$(this).slideUp(deleteElement);
 						},
-						// Add more levels of nesting if needed
 					},
 				],
 			},
@@ -75,6 +136,57 @@ $(document).ready(function () {
 			$(this).slideUp(deleteElement);
 		},
 	});
+
+	$("#repeater_rawat_bangunan").repeater({
+		repeaters: [
+			{
+				selector: ".repeater-rawat-peralatan",
+				show: function () {
+					$(this).slideDown();
+					$(this)
+						.find('[data-kt-repeater="tgl_periksa"]')
+						.flatpickr({
+							minDate: defaultDateRange.from,
+							enable: [defaultDateRange],
+							mode: "range",
+						});
+				},
+	
+				hide: function (deleteElement) {
+					$(this).slideUp(deleteElement);
+				},
+				repeaters: [
+					{
+						selector: ".repeater-rawat-item",
+						show: function () {
+							$(this).slideDown();
+							$(this)
+								.find('[data-kt-repeater="tgl_periksa"]')
+								.flatpickr({
+									minDate: defaultDateRange.from,
+									enable: [defaultDateRange],
+									mode: "range",
+								});
+						},
+						hide: function (deleteElement) {
+							$(this).slideUp(deleteElement);
+						},
+					},
+				],
+			},
+		],
+	
+		show: function () {
+			$(this).slideDown();
+			$(this).find('[data-kt-repeater="tgl_periksa"]').flatpickr();
+		},
+	
+		hide: function (deleteElement) {
+			$(this).slideUp(deleteElement);
+		},
+	});
+
+	// end ready
 });
 
 var KTJadwal = (function () {
@@ -160,10 +272,10 @@ var KTJadwal = (function () {
 					event.preventDefault();
 					formTambahJadwal.submit();
 				});
-			
+
 				submitJadwal.setAttribute("data-kt-indicator", "on");
 				submitJadwal.disabled = true;
-			
+
 				var formData = new FormData(formTambahJadwal);
 				$.ajax({
 					type: "POST",
@@ -187,15 +299,20 @@ var KTJadwal = (function () {
 								confirmButtonColor: "#3085d6",
 								confirmButtonText: "Ok",
 							});
-			
+
 							formTambahJadwal.reset();
+
 						} else {
-							toastr.warning("Data item peralatan gagal ditambahkan", "Gagal!", {
-								timeOut: 2000,
-								extendedTimeOut: 0,
-								closeButton: true,
-								closeDuration: 0,
-							});
+							toastr.warning(
+								"Data item peralatan gagal ditambahkan",
+								"Gagal!",
+								{
+									timeOut: 2000,
+									extendedTimeOut: 0,
+									closeButton: true,
+									closeDuration: 0,
+								}
+							);
 						}
 					},
 					complete: function (data) {
@@ -205,7 +322,7 @@ var KTJadwal = (function () {
 					error: function (data) {
 						submitJadwal.setAttribute("data-kt-indicator", "off");
 						submitJadwal.disabled = false;
-			
+
 						toastr.error("Terjadi kesalahan sistem.", "Gagal!", {
 							timeOut: 2000,
 							extendedTimeOut: 0,
@@ -297,3 +414,52 @@ var KTJadwal = (function () {
 		},
 	};
 })();
+
+function submitFormPemeriksaan(stepper) {
+	var formTambahJadwal = document.getElementById(
+		"form-tambah-jadwal-elektromekanis"
+	);
+	formTambahJadwal.addEventListener("submit", function (event) {
+		event.preventDefault();
+		formTambahJadwal.submit();
+	});
+	var formData = new FormData(formTambahJadwal);
+	$.ajax({
+		type: "POST",
+		url: hostUrl + "jadwal/elektromekanis/store",
+		data: formData,
+		contentType: false,
+		cache: false,
+		processData: false,
+		beforeSend: function (data) {
+		},
+		success: function (data) {
+			const result = JSON.parse(data);
+			$('#kt_jadwal').DataTable().ajax.reload(null, false);
+			if (result.status == true) {
+				stepper.goNext(); // go next step
+			} else {
+				toastr.warning(
+					"Data item peralatan gagal ditambahkan",
+					"Gagal!",
+					{
+						timeOut: 2000,
+						extendedTimeOut: 0,
+						closeButton: true,
+						closeDuration: 0,
+					}
+				);
+			}
+		},
+		complete: function (data) {
+		},
+		error: function (data) {
+			toastr.error("Terjadi kesalahan sistem.", "Gagal!", {
+				timeOut: 2000,
+				extendedTimeOut: 0,
+				closeButton: true,
+				closeDuration: 0,
+			});
+		},
+	});
+}

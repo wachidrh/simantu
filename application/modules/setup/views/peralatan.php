@@ -84,7 +84,7 @@
 					</div>
 					<div class="fv-row mb-10">
 						<label class="required form-label fs-6 mb-2">Nama jenis bangunan</label>
-						<select class="form-select" name="id_jenis_bangunan" data-control="select2" data-dropdown-parent="#modal_add_peralatan" data-placeholder="Select an option">
+						<select class="form-select" name="id_jenis_bangunan" data-control="select2" data-dropdown-parent="#modal_add_peralatan" data-placeholder="Pilih jenis bangunan">
 							<option value=""></option>
 							<?php
 							foreach ($m_bangunan as $item) {
@@ -93,9 +93,9 @@
 							?>
 						</select>
 					</div>
-					<!-- <div class="fv-row mb-10">
-						<label class="required form-label fs-6 mb-2">Nama jenis peralatan</label>
-						<select class="form-select" name="id_jenis_peralatan" data-control="select2" data-dropdown-parent="#modal_add_peralatan" data-placeholder="Select an option">
+					<div class="fv-row mb-10">
+						<label class="form-label fs-6 mb-2">Nama jenis peralatan</label>
+						<select class="form-select" name="id_jenis_peralatan" data-control="select2" data-allow-clear="true" data-dropdown-parent="#modal_add_peralatan" data-placeholder="Pilih jenis peralatan">
 							<option value=""></option>
 							<?php
 							foreach ($m_peralatan as $item) {
@@ -103,7 +103,7 @@
 							}
 							?>
 						</select>
-					</div> -->
+					</div>
 					<div class="fv-row mb-10">
 						<label class="required form-label fs-6 mb-2">NFC ID</label>
 						<input type="text" name="nfc_serial_number" class="form-control col-6" readonly placeholder="Kode NFC" />
@@ -157,9 +157,9 @@
 							?>
 						</select>
 					</div>
-					<!-- <div class="fv-row mb-10">
-						<label class="required form-label fs-6 mb-2">Nama jenis peralatan</label>
-						<select class="form-select" name="edit_id_jenis_peralatan" data-control="select2" data-dropdown-parent="#form-edit-peralatan" data-placeholder="Select an option">
+					<div class="fv-row mb-10">
+						<label class="form-label fs-6 mb-2">Nama jenis peralatan</label>
+						<select class="form-select" name="edit_id_jenis_peralatan" data-control="select2" data-allow-clear="true" data-dropdown-parent="#form-edit-peralatan" data-placeholder="Select an option">
 							<option value=""></option>
 							<?php
 							foreach ($m_peralatan as $item) {
@@ -167,7 +167,7 @@
 							}
 							?>
 						</select>
-					</div> -->
+					</div>
 					<div class="fv-row mb-10">
 						<label class="required form-label fs-6 mb-2">NFC ID</label>
 						<input type="text" name="edit_nfc_serial_number" class="form-control col-6" readonly placeholder="Kode NFC" />

@@ -77,26 +77,37 @@ if (!function_exists('format_rupiah')) {
 }
 
 if (!function_exists('get_weeks')) {
-	function get_weeks($date, $rollover)
+	function get_weeks($date)
 	{
-		$cut = substr($date, 0, 8);
-		$daylen = 86400;
-
-		$timestamp = strtotime($date);
-		$first = strtotime($cut . "00");
-		$elapsed = ($timestamp - $first) / $daylen;
-
-		$weeks = 1;
-
-		for ($i = 1; $i <= $elapsed; $i++) {
-			$dayfind = $cut . (strlen($i) < 2 ? '0' . $i : $i);
-			$daytimestamp = strtotime($dayfind);
-
-			$day = strtolower(date("l", $daytimestamp));
-
-			if ($day == strtolower($rollover))  $weeks++;
+		if ($date == null) {
+			return;
 		}
+		
+		$timestamp = strtotime($date);
 
-		return $weeks;
+		// Calculate day of the month
+		$day_of_month = (int)date('d', $timestamp);
+
+		// Calculate custom week number
+		$custom_week_number = (int)(($day_of_month - 1) / 7) + 1;
+
+		return $custom_week_number;
+	}
+}
+
+if (!function_exists('dd')) {
+	/**
+	 * Dump and die - Laravel style.
+	 *
+	 * @param mixed $data
+	 */
+	function dd($data)
+	{
+		echo '<div style="background-color: #f8f8f8; padding: 10px; border: 1px solid #ccc; margin: 10px;">';
+		echo '<pre>';
+		var_dump($data);
+		echo '</pre>';
+		echo '</div>';
+		die();
 	}
 }

@@ -10,6 +10,7 @@ class Elektromekanis extends CI_Controller
 			redirect('login');
 		}
 		$this->load->model('Model_elektromekanis', 'elektromekanis');
+		$this->load->library('encryption');
 	}
 
 	public function index()
@@ -67,16 +68,17 @@ class Elektromekanis extends CI_Controller
 
 	public function store()
 	{
-		$bangunan = $this->security->xss_clean($this->input->post('repeater_bangunan'));
+		$bangunan = $this->security->xss_clean($this->input->post());
 		$id_periode = $this->security->xss_clean($this->input->post('id_periode'));
 
 		$data['insert_periksa'] = array(
 			'id_periksa' => last_id('tbl_periksa_elektromekanis', 'id_periksa'),
-			'm_lokasi_id' => (int)$_SESSION['unit_id'],
+			'm_lokasi_id' => (int)$_SESSION['active_auth']['unit_id'],
 			'created_at' => $this->timestamp(),
 			'updated_at' => $this->timestamp(),
 			'created_by' => $_SESSION['kopeg'],
-			'id_periode' => $id_periode
+			'id_periode' => $id_periode,
+			'id_jenis_bangunan' => (int)$bangunan['id_jenis_bangunan']
 		);
 
 		$data['data_bangunan'] = $bangunan;
@@ -152,10 +154,38 @@ class Elektromekanis extends CI_Controller
 	{
 		$data['pagetitle'] = 'Form Pemeriksaan Elektromekanis';
 		$data['bangunan'] = $this->elektromekanis->get_bangunan_by_nfc($id);
-		$data['m_kriteria'] = $this->elektromekanis->get_m_kriteria();
-		$data['m_metode'] = $this->elektromekanis->get_m_metode();
 
 		$data['javascript'] = 'pemeriksaan/elektromekanis/form.js';
 		$this->template->load('template', 'pemeriksaan/elektromekanis/form', $data);
+	}
+
+	public function cek_jadwal() {
+		$payloads = $this->security->xss_clean($this->input->post());
+		$periode = urlencode($this->encryption->encrypt($payloads['periode']));
+		$id_bangunan = urlencode($this->encryption->encrypt($payloads['id_bangunan']));
+		$id_peralatan = urlencode($this->encryption->encrypt($payloads['id_peralatan']));
+		$available = $this->elektromekanis->cek_jadwal($payloads);
+		if ($available > 0) {
+			$result = array('status'  => true, 'messages' => 'pemeriksaan/elektromekanis/form-input/'.$periode.'/'.$id_bangunan.'/'.$id_peralatan);
+		}else{
+			$result = array('status'  => false, 'messages' => 'Jadwal tidak tersedia');
+		}
+
+		echo json_encode($result);
+	}
+
+	public function form_input($periode, $id_bangunan, $id_peralatan)
+	{
+		$payloads['periode'] = $this->encryption->decrypt(urldecode($periode));
+		$payloads['id_bangunan'] = $this->encryption->decrypt(urldecode($id_bangunan));
+		$payloads['id_peralatan'] = $this->encryption->decrypt(urldecode($id_peralatan));
+
+		$data['pagetitle'] = 'Form Pemeriksaan Elektromekanis';
+		$data['item_periksa'] = $this->elektromekanis->get_item_periksa($payloads);
+		$data['m_kriteria'] = $this->elektromekanis->get_m_kriteria();
+		$data['m_metode'] = $this->elektromekanis->get_m_metode();
+
+		$data['javascript'] = 'pemeriksaan/elektromekanis/form-input.js';
+		$this->template->load('template', 'pemeriksaan/elektromekanis/form-input', $data);
 	}
 }

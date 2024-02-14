@@ -70,163 +70,411 @@
 			</div>
 
 			<div class="modal-body">
-				<form method="POST" class="form w-100" id="form-tambah-jadwal-elektromekanis">
-					<div class="row">
+				<!--begin::Stepper-->
+				<div class="stepper stepper-pills" id="stepper_jadwal">
+					<!--begin::Nav-->
+					<div class="stepper-nav flex-center flex-wrap mb-10">
+						<!--begin::Step 1-->
+						<div class="stepper-item mx-8 my-4 current" data-kt-stepper-element="nav">
+							<!--begin::Wrapper-->
+							<div class="stepper-wrapper d-flex align-items-center">
+								<!--begin::Icon-->
+								<div class="stepper-icon w-40px h-40px">
+									<i class="stepper-check fas fa-check"></i>
+									<span class="stepper-number">1</span>
+								</div>
+								<!--end::Icon-->
 
-						<div class="col-4 fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
-							<label for="nama_bangunan" class="required form-label">Lokasi jadwal pemeriksaan</label>
-							<div class="input-group">
-								<input type="text" class="form-control" value="<?= $lokasi['nama_lokasi'] ?>" readonly />
+								<!--begin::Label-->
+								<div class="stepper-label">
+									<h3 class="stepper-title">
+										Pemeriksaan
+									</h3>
+								</div>
+								<!--end::Label-->
 							</div>
-							<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
-						</div>
-						<div class="col-4 fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
-							<label for="nama_bangunan" class="required form-label">Tahun Periode</label>
-							<div class="input-group" id="dt_picker_tahun" data-td-target-input="nearest" data-td-target-toggle="nearest">
-								<input id="dt_picker_tahun_input" name="tahun_jadwal" type="text" class="form-control" data-td-target="#dt_picker_tahun" />
-								<span class="input-group-text" data-td-target="#dt_picker_tahun" data-td-toggle="datetimepicker">
-									<i class="ki-duotone ki-calendar fs-2"><span class="path1"></span><span class="path2"></span></i>
-								</span>
-							</div>
-							<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
-						</div>
+							<!--end::Wrapper-->
 
-						<div class="col fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
-							<label for="triwulan" class="required form-label">Triwulan ke -</label>
-							<select name="triwulan" class="form-select" aria-label="Select example">
-								<option>Pilih triwulan</option>
-								<option value="1">Triwulan 1</option>
-								<option value="2">Triwulan 2</option>
-								<option value="3">Triwulan 3</option>
-								<option value="4">Triwulan 4</option>
-							</select>
-							<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+							<!--begin::Line-->
+							<div class="stepper-line h-40px"></div>
+							<!--end::Line-->
 						</div>
+						<!--end::Step 1-->
+
+						<!--begin::Step 2-->
+						<div class="stepper-item mx-8 my-4" data-kt-stepper-element="nav">
+							<!--begin::Wrapper-->
+							<div class="stepper-wrapper d-flex align-items-center">
+								<!--begin::Icon-->
+								<div class="stepper-icon w-40px h-40px">
+									<i class="stepper-check fas fa-check"></i>
+									<span class="stepper-number">2</span>
+								</div>
+								<!--begin::Icon-->
+
+								<!--begin::Label-->
+								<div class="stepper-label">
+									<h3 class="stepper-title">
+										Perawatan
+									</h3>
+								</div>
+								<!--end::Label-->
+							</div>
+							<!--end::Wrapper-->
+
+							<!--begin::Line-->
+							<div class="stepper-line h-40px"></div>
+							<!--end::Line-->
+						</div>
+						<!--end::Step 2-->
 					</div>
+					<!--end::Nav-->
 
+					<!--begin::Group-->
+					<div class="mb-5">
+						<!--begin::Step 1-->
+						<div class="flex-column current" data-kt-stepper-element="content">
+							<form method="POST" class="form w-100" id="form-tambah-jadwal-elektromekanis">
+								<div class="row">
 
-					<h3>Item Pemeriksaan 1</h3>
-					<div id="repeater_bangunan">
-						<div class="form-group">
-							<div data-repeater-list="repeater_bangunan_outer">
-								<div data-repeater-item>
-									<div class="row bg-secondary py-2 mb-2">
-										<div class="col-2 fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
-											<label for="jenis_bangunan" class="required form-label">Jenis Bangunan</label>
-											<select name="id_jenis_bangunan" class="form-select" aria-label="Select example">
-												<option value="">Pilih jenis bangunan</option>
-												<?php
-												foreach ($bangunan as $b) {
-													echo '<option value="' . $b->id_jenis_bangunan . '">' . $b->nama_bangunan . '</option>';
-												}
-												?>
-											</select>
-											<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+									<div class="col-4 fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
+										<label for="nama_bangunan" class="required form-label">Lokasi jadwal pemeriksaan</label>
+										<div class="input-group">
+											<input type="text" class="form-control" value="<?= $lokasi['nama_lokasi'] ?>" readonly />
 										</div>
-										<div class="repeater-peralatan col">
-											<div data-repeater-list="repeater_peralatan">
-												<div data-repeater-item>
-													<div class="row">
-														<div class="col-3 fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
-															<label for="jenis_bangunan" class="required form-label">Jenis Peralatan</label>
-															<select name="id_jenis_peralatan" class="form-select" aria-label="Select example">
-																<option value="">Pilih peralatan</option>
-																<?php
-																foreach ($peralatan as $alat) {
-																	echo '<option value="' . $alat->id_jenis_peralatan . '">' . $alat->nama . '</option>';
-																}
-																?>
-															</select>
-															<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+										<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+									</div>
+									<div class="col-4 fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
+										<label for="nama_bangunan" class="required form-label">Tahun Periode</label>
+										<div class="input-group" id="dt_picker_tahun" data-td-target-input="nearest" data-td-target-toggle="nearest">
+											<input id="dt_picker_tahun_input" name="tahun_jadwal" type="text" value="<?= date('Y') ?>" class="form-control" data-td-target="#dt_picker_tahun" />
+											<span class="input-group-text" data-td-target="#dt_picker_tahun" data-td-toggle="datetimepicker">
+												<i class="ki-duotone ki-calendar fs-2"><span class="path1"></span><span class="path2"></span></i>
+											</span>
+										</div>
+										<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+									</div>
+
+									<div class="col fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
+										<label for="triwulan" class="required form-label">Triwulan ke -</label>
+										<select name="triwulan" class="form-select" aria-label="Select example">
+											<option>Pilih triwulan</option>
+											<option value="1">Triwulan 1</option>
+											<option value="2">Triwulan 2</option>
+											<option value="3">Triwulan 3</option>
+											<option value="4">Triwulan 4</option>
+										</select>
+										<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+									</div>
+								</div>
+
+								<div id="repeater_bangunan">
+									<div class="form-group">
+										<div data-repeater-list="repeater_bangunan_outer">
+											<div data-repeater-item>
+												<div class="row bg-light py-4 mb-2">
+													<div class="col-2 fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
+														<label for="jenis_bangunan" class="required form-label">Jenis Bangunan</label>
+														<select name="id_jenis_bangunan" class="form-select" aria-label="Select example">
+															<option value="">Pilih jenis bangunan</option>
+															<?php
+															foreach ($bangunan as $b) {
+																echo '<option value="' . $b->id_jenis_bangunan . '">' . $b->nama_bangunan . '</option>';
+															}
+															?>
+														</select>
+														<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+													</div>
+													<div class="repeater-peralatan col">
+														<div data-repeater-list="repeater_peralatan">
+															<div data-repeater-item>
+																<div class="row">
+																	<div class="col-2 fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
+																		<label for="jenis_bangunan" class="required form-label">Jenis Peralatan</label>
+																		<select name="id_jenis_peralatan" class="form-select" aria-label="Select example">
+																			<option value="">Pilih peralatan</option>
+																			<?php
+																			foreach ($peralatan as $alat) {
+																				echo '<option value="' . $alat->id_jenis_peralatan . '">' . $alat->nama . '</option>';
+																			}
+																			?>
+																		</select>
+																		<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+																	</div>
+																	<div class="repeater-item col">
+																		<div data-repeater-list="repeater_item">
+																			<div data-repeater-item>
+																				<div class="row mb-0">
+																					<div class="col fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
+																						<label for="jenis_bangunan" class="required form-label">Jenis item Peralatan</label>
+																						<select name="id_item_peralatan" class="form-select" aria-label="Select example">
+																							<option value="">Pilih item peralatan</option>
+																							<?php
+																							foreach ($item_peralatan as $item) {
+																								echo '<option value="' . $item->id_item_peralatan . '">' . $item->nama_item . '</option>';
+																							}
+																							?>
+																						</select>
+																						<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+																					</div>
+																					<div class="col fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
+																						<label for="jenis_bangunan" class="required form-label">Kriteria</label>
+																						<select name="id_kriteria" class="form-select" aria-label="Select example">
+																							<option value="">Pilih kriteria pemeriksaan</option>
+																							<?php
+																							foreach ($kriteria as $k) {
+																								echo '<option value="' . $k->id_kriteria . '">' . $k->kriteria . '</option>';
+																							}
+																							?>
+																						</select>
+																						<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+																					</div>
+																					<div class="col fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
+																						<label for="jenis_bangunan" class="required form-label">Metode pemeriksaan</label>
+																						<select name="id_metode" class="form-select" aria-label="Select example">
+																							<option value="">Pilih metode pemeriksaan</option>
+																							<?php
+																							foreach ($metode as $m) {
+																								echo '<option value="' . $m->id_metode . '">' . $m->metode . '</option>';
+																							}
+																							?>
+																						</select>
+																						<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+																					</div>
+																					<div class="col fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
+																						<label for="jenis_bangunan" class="required form-label">Periode</label>
+																						<select name="id_periode" class="form-select" aria-label="Select example">
+																							<option value="">Pilih periode pemeriksaan</option>
+																							<?php
+																							foreach ($periode as $p) {
+																								echo '<option value="' . $p->id_periode . '">' . $p->periode . '</option>';
+																							}
+																							?>
+																						</select>
+																						<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+																					</div>
+																					<div class="col">
+																						<label class="form-label">Hari / Tanggal Periksa:</label>
+																						<input name="tgl_periksa" class="form-control tgl_periksa" data-kt-repeater="tgl_periksa" placeholder="Pilih hari / tanggal" />
+																					</div>
+																					<div class="col fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
+																						<label for="keterangan" class="form-label">Keterangan</label>
+																						<div class="input-group">
+																							<input type="text" class="form-control" name="keterangan" placeholder="Keterangan" />
+																						</div>
+																						<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+																					</div>
+																				</div>
+																				<button class="btn btn-sm btn-light-danger mb-2" data-repeater-delete type="button">
+																					<i class="ki-duotone ki-trash fs-5"></i>
+																					Hapus item
+																				</button>
+																			</div>
+																		</div>
+																		<button class="btn btn-sm btn-flex btn-light-primary" data-repeater-create type="button">
+																			<i class="ki-duotone ki-plus fs-5"></i>
+																			Tambah Item
+																		</button>
+																	</div>
+																</div>
+																<button class="btn btn-sm btn-light-danger mb-2" data-repeater-delete type="button">
+																	<i class="ki-duotone ki-trash fs-5"></i>
+																	Hapus Alat
+																</button>
+															</div>
 														</div>
-														<div class="repeater-item col">
-															<div data-repeater-list="repeater_item">
-																<div data-repeater-item>
-																	<div class="row">
-																		<div class="col-4 fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
-																			<label for="jenis_bangunan" class="required form-label">Jenis item Peralatan</label>
-																			<select name="id_item_peralatan" class="form-select" aria-label="Select example">
-																				<option value="">Pilih item peralatan</option>
-																				<?php
-																				foreach ($item_peralatan as $item) {
-																					echo '<option value="' . $item->id_item_peralatan . '">' . $item->nama_item . '</option>';
-																				}
-																				?>
-																			</select>
-																			<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
-																		</div>
-																		<div class="col-4 fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
-																			<label for="jenis_bangunan" class="required form-label">Periode</label>
-																			<select name="id_periode" class="form-select" aria-label="Select example">
-																				<option value="">Pilih periode pemeriksaan</option>
-																				<?php
-																				foreach ($periode as $p) {
-																					echo '<option value="' . $p->id_periode . '">' . $p->periode . '</option>';
-																				}
-																				?>
-																			</select>
-																			<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
-																		</div>
-																		<div class="col">
-																			<label class="form-label">Hari / Tanggal Periksa:</label>
-																			<input name="tgl_periksa" class="form-control" data-kt-repeater="tgl_periksa" placeholder="Pilih hari / tanggal" />
+														<button class="btn btn-sm btn-flex btn-light-primary" data-repeater-create type="button">
+															<i class="ki-duotone ki-plus fs-5"></i>
+															Tambah Alat
+														</button>
+													</div>
+												</div>
+												<button class="btn btn-sm btn-flex btn-light-danger mb-2" data-repeater-delete type="button">
+													<i class="ki-duotone ki-trash fs-5"></i>
+													Hapus Bangunan
+												</button>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<a href="javascript:;" data-repeater-create class="btn btn-flex btn-light-primary">
+											<i class="ki-duotone ki-plus fs-3"></i>
+											Tambah Bangunan
+										</a>
+									</div>
+								</div>
+						</div>
+						<!--begin::Step 1-->
+
+						<!--begin::Step 1-->
+						<div class="flex-column" data-kt-stepper-element="content">
+							<div id="repeater_rawat_bangunan">
+								<div class="form-group">
+									<div data-repeater-list="repeater_rawat_bangunan_outer">
+										<div data-repeater-item>
+											<div class="row bg-secondary py-2 mb-2">
+												<div class="col-2 fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
+													<label for="rawat_id_jenis_bangunan" class="required form-label">Jenis Bangunan</label>
+													<select name="id_jenis_bangunan" class="form-select" aria-label="Select example">
+														<option value="">Pilih jenis bangunan</option>
+														<?php
+														foreach ($bangunan as $b) {
+															echo '<option value="' . $b->id_jenis_bangunan . '">' . $b->nama_bangunan . '</option>';
+														}
+														?>
+													</select>
+													<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+												</div>
+												<div class="repeater-rawat-peralatan col">
+													<div data-repeater-list="repeater_rawat_peralatan">
+														<div data-repeater-item>
+															<div class="row">
+																<div class="col-2 fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
+																	<label for="rawat_id_jenis_peralatan" class="required form-label">Jenis Peralatan</label>
+																	<select name="id_jenis_peralatan" class="form-select" aria-label="Select example">
+																		<option value="">Pilih peralatan</option>
+																		<?php
+																		foreach ($peralatan as $alat) {
+																			echo '<option value="' . $alat->id_jenis_peralatan . '">' . $alat->nama . '</option>';
+																		}
+																		?>
+																	</select>
+																	<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+																</div>
+																<div class="repeater-rawat-item col">
+																	<div data-repeater-list="repeater_rawat_item">
+																		<div data-repeater-item>
+																			<div class="row">
+																				<div class="col fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
+																					<label for="jenis_bangunan" class="required form-label">Jenis item Peralatan</label>
+																					<select name="id_item_peralatan" class="form-select" aria-label="Select example">
+																						<option value="">Pilih item peralatan</option>
+																						<?php
+																						foreach ($item_peralatan as $item) {
+																							echo '<option value="' . $item->id_item_peralatan . '">' . $item->nama_item . '</option>';
+																						}
+																						?>
+																					</select>
+																					<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+																				</div>
+																				<div class="col fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
+																					<label for="jenis_bangunan" class="required form-label">Pilihan pelaksanaan</label>
+																					<select name="id_pelaksanaan" class="form-select" aria-label="Select example">
+																						<option value="">Pilih metode pelaksanaan</option>
+																						<option value="B">Pembersihan</option>
+																						<option value="S">Setel</option>
+																						<option value="Gr">Grease</option>
+																						<option value="P">Pelumasan</option>
+																						<option value="U">Uji coba</option>
+																						<option value="G">Penggantian</option>
+																						<option value="C">Pengecatan</option>
+																					</select>
+																					<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+																				</div>
+																				<div class="col fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
+																					<label for="jenis_bangunan" class="required form-label">Periode</label>
+																					<select name="id_periode" class="form-select" aria-label="Select example">
+																						<option value="">Pilih periode pemeriksaan</option>
+																						<?php
+																						foreach ($periode as $p) {
+																							echo '<option value="' . $p->id_periode . '">' . $p->periode . '</option>';
+																						}
+																						?>
+																					</select>
+																					<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+																				</div>
+																				<div class="col fv-row mb-5 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
+																					<label for="keterangan" class="form-label">Keterangan</label>
+																					<div class="input-group">
+																						<input type="text" class="form-control" name="keterangan" placeholder="Keterangan" />
+																					</div>
+																					<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+																				</div>
+																				<div class="col">
+																					<label class="form-label">Hari / Tanggal Periksa:</label>
+																					<input name="tgl_periksa" class="form-control tgl_periksa" data-kt-repeater="tgl_periksa" placeholder="Pilih hari / tanggal" />
+																				</div>
+																			</div>
+																			<button class="btn btn-sm btn-light-danger mb-2" data-repeater-delete type="button">
+																				<i class="ki-duotone ki-trash fs-5"></i>
+																				Hapus item
+																			</button>
 																		</div>
 																	</div>
-																	<button class="btn btn-sm btn-light-danger mb-2" data-repeater-delete type="button">
-																		<i class="ki-duotone ki-trash fs-5"></i>
-																		Hapus item
+																	<button class="btn btn-sm btn-flex btn-light-primary" data-repeater-create type="button">
+																		<i class="ki-duotone ki-plus fs-5"></i>
+																		Tambah Item
 																	</button>
 																</div>
 															</div>
-															<button class="btn btn-sm btn-flex btn-light-primary" data-repeater-create type="button">
-																<i class="ki-duotone ki-plus fs-5"></i>
-																Tambah Item
+															<button class="btn btn-sm btn-light-danger mb-2" data-repeater-delete type="button">
+																<i class="ki-duotone ki-trash fs-5"></i>
+																Hapus Alat
 															</button>
 														</div>
 													</div>
-													<button class="btn btn-sm btn-light-danger mb-2" data-repeater-delete type="button">
-														<i class="ki-duotone ki-trash fs-5"></i>
-														Hapus Alat
+													<button class="btn btn-sm btn-flex btn-light-primary" data-repeater-create type="button">
+														<i class="ki-duotone ki-plus fs-5"></i>
+														Tambah Alat
 													</button>
 												</div>
 											</div>
-											<button class="btn btn-sm btn-flex btn-light-primary" data-repeater-create type="button">
-												<i class="ki-duotone ki-plus fs-5"></i>
-												Tambah Alat
+											<button class="btn btn-sm btn-flex btn-light-danger mb-2" data-repeater-delete type="button">
+												<i class="ki-duotone ki-trash fs-5"></i>
+												Hapus Bangunan
 											</button>
 										</div>
 									</div>
-									<button class="btn btn-sm btn-flex btn-light-danger mb-2" data-repeater-delete type="button">
-										<i class="ki-duotone ki-trash fs-5"></i>
-										Hapus Bangunan
-									</button>
+								</div>
+								<div class="form-group">
+									<a href="javascript:;" data-repeater-create class="btn btn-flex btn-light-primary">
+										<i class="ki-duotone ki-plus fs-3"></i>
+										Tambah Bangunan
+									</a>
 								</div>
 							</div>
+							</form>
 						</div>
-						<div class="form-group">
-							<a href="javascript:;" data-repeater-create class="btn btn-flex btn-light-primary">
-								<i class="ki-duotone ki-plus fs-3"></i>
-								Tambah Bangunan
-							</a>
+						<!--begin::Step 1-->
+					</div>
+					<!--end::Group-->
+					<!--begin::Actions-->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+						<div class="d-flex flex-stack">
+							<!--begin::Wrapper-->
+							<div class="me-2">
+								<button type="button" class="btn btn-light btn-active-light-primary" data-kt-stepper-action="previous">
+									Back
+								</button>
+							</div>
+							<!--end::Wrapper-->
+
+							<!--begin::Wrapper-->
+							<div>
+								<button id="btn-submit-jadwal" class="btn btn-primary me-2 flex-shrink-0" data-kt-stepper-action="submit">
+									<span class="indicator-label" data-kt-translate="btn-submit-jadwal">
+										Submit
+									</span>
+									<span class="indicator-progress">
+										<span data-kt-translate="general-progress">Harap tunggu...</span>
+										<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+									</span>
+								</button>
+
+								<button type="button" class="btn btn-primary" data-kt-stepper-action="next">
+									Continue
+								</button>
+							</div>
+							<!--end::Wrapper-->
+
 						</div>
 					</div>
-				</form>
+					<!--end::Actions-->
+				</div>
+				<!--end::Stepper-->
 			</div>
 
-			<div class="modal-footer">
-				<button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-				<div class="d-flex flex-stack">
-					<button id="btn-submit-jadwal" class="btn btn-primary me-2 flex-shrink-0">
-						<span class="indicator-label" data-kt-translate="btn-submit-jadwal">
-							Simpan
-						</span>
-						<span class="indicator-progress">
-							<span data-kt-translate="general-progress">Harap tunggu...</span>
-							<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-						</span>
-					</button>
-				</div>
-			</div>
 		</div>
 	</div>
 </div>

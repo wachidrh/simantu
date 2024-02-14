@@ -20,8 +20,10 @@ class Elektromekanis extends CI_Controller
 		$data['bangunan'] = $this->elektromekanis->get_all_m_bangunan();
 		$data['peralatan'] = $this->elektromekanis->get_all_m_peralatan();
 		$data['item_peralatan'] = $this->elektromekanis->get_all_m_item_peralatan();
+		$data['kriteria'] = $this->elektromekanis->get_all_m_kriteria();
+		$data['metode'] = $this->elektromekanis->get_all_m_metode();
 		$data['periode'] = $this->elektromekanis->get_all_m_periode();
-		$data['lokasi'] = $this->elektromekanis->get_lokasi_by_id((int)$_SESSION['unit_id']);
+		$data['lokasi'] = $this->elektromekanis->get_lokasi_by_id((int)$_SESSION['active_auth']['unit_id']);
 
 		$data['javascript'] = 'jadwal/elektromekanis.js';
 		$this->template->load('template', 'jadwal/elektromekanis', $data);
@@ -77,19 +79,21 @@ class Elektromekanis extends CI_Controller
 		$tahun_jadwal = $this->security->xss_clean($this->input->post('tahun_jadwal'));
 		$triwulan = $this->security->xss_clean($this->input->post('triwulan'));
 		$data_bangunan = $this->security->xss_clean($this->input->post('repeater_bangunan_outer'));
+		$data_rawat_bangunan = $this->security->xss_clean($this->input->post('repeater_rawat_bangunan_outer'));
 
 		$data['insert_jadwal'] = array(
 			'id_jadwal' => last_id('tbl_jadwal', 'id_jadwal'),
-			'm_lokasi_id' => (int)$_SESSION['unit_id'],
+			'm_lokasi_id' => (int)$_SESSION['active_auth']['unit_id'],
 			'created_at' => $this->timestamp(),
 			'updated_at' => $this->timestamp(),
 			'created_by' => $_SESSION['kopeg'],
-			'jenis_jadwal' => 1,
 			'triwulan' => $triwulan,
-			'tahun_jadwal' => $tahun_jadwal
+			'tahun_jadwal' => $tahun_jadwal,
+			'jenis_jadwal' => 1,
 		);
 
 		$data['data_bangunan'] = $data_bangunan;
+		$data['data_rawat_bangunan'] = $data_rawat_bangunan;
 
 
 		if ($this->elektromekanis->store($data)) {

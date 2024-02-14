@@ -54,6 +54,16 @@ var KTPenggunaList = (function () {
 						targets: [2],
 						orderable: false,
 						class: "align-top",
+					},
+					{
+						targets: [3],
+						orderable: false,
+						class: "align-top",
+					},
+					{
+						targets: [4],
+						orderable: false,
+						class: "align-top",
 					}
 				],
 
@@ -65,35 +75,35 @@ var KTPenggunaList = (function () {
 			});
 
 			// Add Asal Pengguna
-			const formPengguna = document.getElementById("frm-add-pengguna");
+			const formPengguna = document.getElementById("form-tambah-pengguna");
 			var valid_pengguna = FormValidation.formValidation(formPengguna, {
 				framework: "bootstrap",
 				fields: {
-					peran_id: {
+					kopeg: {
+						validators: {
+							notEmpty: {
+								message: "Kode pegawai harus diisi",
+							},
+						},
+					},
+					nama: {
+						validators: {
+							notEmpty: {
+								message: "Nama harus diisi",
+							},
+						},
+					},
+                    level: {
 						validators: {
 							notEmpty: {
 								message: "Pilih salah satu",
 							},
 						},
 					},
-					nama_pengguna: {
+					lokasi: {
 						validators: {
 							notEmpty: {
-								message: "Nama Lengkap harus diisi",
-							},
-						},
-					},
-					kopeg: {
-						validators: {
-							notEmpty: {
-								message: "Nama Pengguna harus diisi",
-							},
-						},
-					},
-                    password: {
-						validators: {
-							notEmpty: {
-								message: "Kata Sandi harus diisi",
+								message: "Pilih salah satu",
 							},
 						},
 					},
@@ -109,43 +119,7 @@ var KTPenggunaList = (function () {
 				},
 			});
 
-            $("#kopeg").on("change", function () {
-				const kopeg = $(this).val();
-                const field = formPengguna.querySelector('[name="kopeg"]');
-				const errorMessage = "Nama Pengguna sudah digunakan";
-                
-                $.ajax({
-                    url: hostUrl + "pengaturan/pengguna/check-pengguna",
-                    type: "POST",
-                    data: { kopeg: kopeg },
-                    success: function (data) {
-                        var result = JSON.parse(data);
-                        if (result.status == true) {
-                            field.classList.add("is-invalid");
-                            let errorElement =
-                                field.parentNode.querySelector(".invalid-feedback");
-
-                            if (!errorElement) {
-                                errorElement = document.createElement("div");
-                                errorElement.classList.add("invalid-feedback");
-                                field.parentNode.appendChild(errorElement);
-                            }
-                            errorElement.innerText = errorMessage;
-                            $("#kopeg").val("");
-                        } else {
-                            field.classList.remove("is-invalid");
-                            const errorElement =
-                                field.parentNode.querySelector(".invalid-feedback");
-                            if (errorElement) {
-                                errorElement.remove();
-                            }
-                        }
-                    },
-                });
-            });
-             
-            
-			const submitPengguna = document.getElementById("btn-submit-pengguna");
+			const submitPengguna = document.getElementById("btn-submit-tambah-pengguna");
 			submitPengguna.addEventListener("click", function (e) {
 				e.preventDefault();
 
@@ -158,7 +132,7 @@ var KTPenggunaList = (function () {
 							var formData = new FormData(formPengguna);
 							$.ajax({
 								type: "POST",
-								url: hostUrl + "pengaturan/pengguna/add-pengguna",
+								url: hostUrl + "pengguna/pengguna/store",
 								data: formData,
 								contentType: false,
 								cache: false,
@@ -179,9 +153,9 @@ var KTPenggunaList = (function () {
 										});
 										table.ajax.reload(null, false);
 
-										document.getElementById("frm-add-pengguna").reset();
+										document.getElementById("form-add-pengguna").reset();
 									} else {
-										toastr.warning("Data Pengguna gagal ditambahkan", "Gagal!", {
+										toastr.warning(result.messages, "Gagal!", {
 											timeOut: 2000,
 											extendedTimeOut: 0,
 											closeButton: true,
@@ -212,28 +186,63 @@ var KTPenggunaList = (function () {
 			// Add Asal Pengguna
 
 			// Edit Asal Pengguna
-			const formEditPengguna = document.getElementById("frm-edit-pengguna");
+			$(document).on("click", ".ubah-pengguna", function (e) {
+				e.preventDefault();
+				var id_pengguna = $(this).attr("data-id");
+				
+				$.ajax({
+					url: hostUrl + "pengguna/pengguna/lookup",
+					type: "POST",
+					data: { id_pengguna: id_pengguna },
+					dataType: "json",
+					beforeSend: function () {
+						KTApp.showPageLoading();
+					},
+					success: function (response) {
+						if (response.status == true && Object.keys(response.data).length !== 0) {
+
+							$("[name='edit_id_pengguna']").val(response.data.auth_id);
+							$("[name='edit_lokasi']").val(response.data.unit_id).trigger("change");
+							$("[name='edit_kopeg']").val(response.data.kopeg);
+							$("[name='edit_nama']").val(response.data.full_name);
+
+							
+							let is_aktif = response.data.is_aktif == 1 ? true : false;
+							$("#edit_is_aktif").prop("checked", is_aktif);
+			
+							$("#modal_edit_pengguna").modal("show");
+						} else {
+							toastr.error("Terjadi kesalahan saat memuat data.", "Gagal!", {
+								timeOut: 2000,
+								extendedTimeOut: 0,
+								closeButton: true,
+								closeDuration: 0,
+							});
+						}
+					},
+					complete: function () {
+						KTApp.hidePageLoading();
+					},
+					error: function () {
+						toastr.error("Terjadi kesalahan saat memuat data.", "Gagal!", {
+							timeOut: 2000,
+							extendedTimeOut: 0,
+							closeButton: true,
+							closeDuration: 0,
+						});
+					},
+				});
+			});	
+
+			// Edit Asal Pengguna
+			const formEditPengguna = document.getElementById("form-edit-pengguna");
 			var valid_update = FormValidation.formValidation(formEditPengguna, {
 				framework: "bootstrap",
 				fields: {
-					_peran_id: {
+					edit_lokasi: {
 						validators: {
 							notEmpty: {
 								message: "Pilih salah satu",
-							},
-						},
-					},
-					_nama_pengguna: {
-						validators: {
-							notEmpty: {
-								message: "Nama Lengkap harus diisi",
-							},
-						},
-					},
-					_kopeg: {
-						validators: {
-							notEmpty: {
-								message: "Nama Pengguna harus diisi",
 							},
 						},
 					},
@@ -249,9 +258,12 @@ var KTPenggunaList = (function () {
 				},
 			});
 
-			const updatePengguna = document.getElementById("btn-update-pengguna");
+			const updatePengguna = document.getElementById("btn-submit-update-pengguna");
 			updatePengguna.addEventListener("click", function (e) {
-				e.preventDefault();
+				formEditPengguna.addEventListener('submit', function(event) {
+					event.preventDefault();
+					formEditPengguna.submit();
+				});
 
 				if (valid_update) {
 					valid_update.validate().then(function (status) {
@@ -262,7 +274,7 @@ var KTPenggunaList = (function () {
 							var formData = new FormData(formEditPengguna);
 							$.ajax({
 								type: "POST",
-								url: hostUrl + "pengaturan/pengguna/update-pengguna",
+								url: hostUrl + "pengguna/pengguna/update",
 								data: formData,
 								contentType: false,
 								cache: false,
@@ -283,7 +295,7 @@ var KTPenggunaList = (function () {
 										});
 										table.ajax.reload(null, false);
 
-										document.getElementById("frm-edit-pengguna").reset();
+										document.getElementById("form-edit-pengguna").reset();
 									} else {
 										toastr.warning("Data pengguna gagal diperbarui", "Gagal!", {
 											timeOut: 2000,
@@ -388,62 +400,11 @@ var KTPenggunaList = (function () {
 
 			(n = $("#kt_pengguna_table")) &&
 				((t = table).on("draw", function () {
-					r();
-					l();
-				}),
-				r());
+				}));
 		},
 	};
 })();
 
 $(document).ready(function () {
 	KTPenggunaList.init();
-});
-
-$(document).on("click", ".ubah-pengguna", function (e) {
-	e.preventDefault();
-	var pengguna_id = $(this).attr("data-id");
-    
-	$.ajax({
-		url: hostUrl + "pengaturan/pengguna/detail-pengguna",
-		type: "POST",
-		data: { pengguna_id: pengguna_id },
-		dataType: "json",
-		beforeSend: function () {
-			KTApp.showPageLoading();
-		},
-		success: function (response) {
-			if (response.status == true) {
-                $("#_pengguna_id").val(pengguna_id);
-                
-				$("#_peran_id").val(response.messages.level_id).trigger("change");
-				$("#_nama_pengguna").val(response.messages.full_name);
-				$("#_email_pengguna").val(response.messages.email);
-				$("#_telepon_pengguna").val(response.messages.mobile_phone);
-                $("#_divisi_id").val(response.messages.unit_id).trigger("change");
-                $("#_jabatan").val(response.messages.jabatan);
-                $("#_kopeg").val(response.messages.kopeg);
-
-				$("#modal_edit_pengguna").modal("show");
-			} else {
-				toastr.error("Terjadi kesalahan saat memuat data.", "Gagal!", {
-					timeOut: 2000,
-					extendedTimeOut: 0,
-					closeButton: true,
-					closeDuration: 0,
-				});
-			}
-		},
-		complete: function () {
-			KTApp.hidePageLoading();
-		},
-		error: function () {
-			toastr.error("Terjadi kesalahan saat memuat data.", "Gagal!", {
-				timeOut: 2000,
-				extendedTimeOut: 0,
-				closeButton: true,
-				closeDuration: 0,
-			});
-		},
-	});
 });

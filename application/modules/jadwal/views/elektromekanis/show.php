@@ -68,15 +68,15 @@
 								<tr class="fw-bold fs-6 text-gray-800 text-center align-middle">
 									<th rowspan="3">No</th>
 									<th rowspan="3">JENIS PERALATAN ELEKTROMEKANIS</th>
-									<th rowspan="3">PERIODE PEMERIKSAAN</th>
-									<th colspan="15">Bulan</th>
+									<th rowspan="3">PERIODE</th>
+									<th colspan="12">Bulan</th>
 									<th rowspan="3">KETERANGAN</th>
 								</tr>
 								<tr class="fw-bold fs-6 text-gray-800 text-center">
 									<?php
 									foreach ($jadwal['bulan_triwulan'] as $key => $b) {
 									?>
-										<th colspan="5"><?= $b['bulan'] ?></th>
+										<th colspan="4"><?= $b['bulan'] ?></th>
 									<?php
 									}
 									?>
@@ -87,17 +87,14 @@
 									<th>II</th>
 									<th>III</th>
 									<th>IV</th>
-									<th>V</th>
 									<th>I</th>
 									<th>II</th>
 									<th>III</th>
 									<th>IV</th>
-									<th>V</th>
 									<th>I</th>
 									<th>II</th>
 									<th>III</th>
 									<th>IV</th>
-									<th>V</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -108,7 +105,7 @@
 								$last_start_bangunan = 1;
 								$last_start_peralatan = 1;
 
-								foreach ($jadwal['item_jadwal'] as $key => $item) {
+								foreach ($jadwal['item_jadwal_pemeriksaan'] as $key => $item) {
 									if ($item['id_jenis_bangunan'] != $last_id_bangunan) {
 								?>
 										<tr>
@@ -119,7 +116,6 @@
 											</td>
 											<td><b><?= ($item['id_jenis_bangunan'] != $last_id_bangunan) ? $item['nama_bangunan'] : "" ?></b></td>
 											<td colspan="16"></td>
-											<td></td>
 										</tr>
 									<?php
 										$last_start_bangunan++;
@@ -136,7 +132,6 @@
 											</td>
 											<td><b><?= ($item['id_jenis_peralatan'] != $last_id_peralatan) ? $item['nama'] : "" ?></b></td>
 											<td colspan="16"></td>
-											<td></td>
 										</tr>
 									<?php
 										$last_start_peralatan++;
@@ -151,9 +146,9 @@
 											<?php
 											$periode = $item['periode'];
 											foreach ($jadwal['bulan_triwulan'] as $key => $b) {
-												$weeks = get_weeks($item['tgl_periksa'], 'sunday');
-												$month = date('m', strtotime($item['tgl_periksa']));
+												$weeks = get_weeks($item['tgl_periksa_start'], 'sunday');
 												$date_fix = in_array($periode, ['3BL', '6BL', '1TH', '2TH', '4TH', '5TH']);
+												$month = $date_fix ? date('m', strtotime($item['tgl_periksa_start'])) : '';
 
 												$td1 = ($periode == "SB" && $weeks == 1) ? "SB" : ($periode == 'SM' ? "SM" : (($date_fix && $month == $b['nomor_bulan'] && $weeks == 1) ? $periode : ($periode == 'SH' ? 'SH' : "")));
 												$td2 = ($periode == "SB" && $weeks == 2) ? "SB" : ($periode == 'SM' ? "SM" : (($date_fix && $month == $b['nomor_bulan'] && $weeks == 2) ? $periode : ($periode == 'SH' ? 'SH' : "")));
@@ -162,15 +157,14 @@
 												$td5 = ($periode == "SB" && $weeks >= 5) ? "SB" : ($periode == 'SM' ? "SM" : (($date_fix && $month == $b['nomor_bulan'] && $weeks >= 5) ? $periode : ($periode == 'SH' ? 'SH' : "")));
 
 											?>
-												<td><?= $td1 ?></td>
-												<td><?= $td2 ?></td>
-												<td><?= $td3 ?></td>
-												<td><?= $td4 ?></td>
-												<td><?= $td5 ?></td>
+												<td style="text-align: center"><?= $td1 ?></td>
+												<td style="text-align: center"><?= $td2 ?></td>
+												<td style="text-align: center"><?= $td3 ?></td>
+												<td style="text-align: center"><?= $td4 ?></td>
 											<?php
 											}
 											?>
-											<td></td>
+											<td><?= $item['keterangan'] ?></td>
 										</tr>
 								<?php
 									}
@@ -180,7 +174,87 @@
 									$last_id_item = $item['id_item_peralatan'];
 								}
 								?>
+								<tr><td>&nbsp;</td></tr>
+								<tr>
+									<td><b>Perawatan</b></td>
+								</tr>
+								<tr><td>&nbsp;</td></tr>
+								<?php
+								$last_id_bangunan = 0;
+								$last_id_peralatan = 0;
+								$last_id_item = 0;
+								$last_start_bangunan = 1;
+								$last_start_peralatan = 1;
 
+								foreach ($jadwal['item_jadwal_perawatan'] as $key => $item) {
+									if ($item['id_jenis_bangunan'] != $last_id_bangunan) {
+								?>
+										<tr>
+											<td>
+												<ol style="margin:0" type="A" start="<?= $last_start_bangunan ?>">
+													<li><?= ($item['id_jenis_bangunan'] != $last_id_bangunan) ? "" : "" ?></li>
+												</ol>
+											</td>
+											<td><b><?= ($item['id_jenis_bangunan'] != $last_id_bangunan) ? $item['nama_bangunan'] : "" ?></b></td>
+											<td colspan="16"></td>
+										</tr>
+									<?php
+										$last_start_bangunan++;
+										$last_start_peralatan = 1;
+									}
+
+									if ($item['id_jenis_peralatan'] != $last_id_peralatan) {
+									?>
+										<tr>
+											<td>
+												<ol style="margin:0" type="1" start="<?= $last_start_peralatan ?>">
+													<li></li>
+												</ol>
+											</td>
+											<td><b><?= ($item['id_jenis_peralatan'] != $last_id_peralatan) ? $item['nama'] : "" ?></b></td>
+											<td colspan="16"></td>
+										</tr>
+									<?php
+										$last_start_peralatan++;
+									}
+
+									if ($item['id_item_peralatan'] != $last_id_item) {
+									?>
+										<tr>
+											<td></td>
+											<td>- <?= $item['nama_item'] ?></td>
+											<td><?= $item['periode'] ?></td>
+											<?php
+											$periode = $item['periode'];
+											foreach ($jadwal['bulan_triwulan'] as $key => $b) {
+												$weeks = get_weeks($item['tgl_periksa_start'], 'sunday');
+												$date_fix = in_array($periode, ['3BL', '6BL', '1TH', '2TH', '4TH', '5TH']);
+												$month = $date_fix ? date('m', strtotime($item['tgl_periksa_start'])) : '';
+
+												$td1 = ($periode == "SB" && $weeks == 1) ? "SB" : ($periode == 'SM' ? "SM" : (($date_fix && $month == $b['nomor_bulan'] && $weeks == 1) ? $periode : ($periode == 'SH' ? 'SH' : "")));
+												$td2 = ($periode == "SB" && $weeks == 2) ? "SB" : ($periode == 'SM' ? "SM" : (($date_fix && $month == $b['nomor_bulan'] && $weeks == 2) ? $periode : ($periode == 'SH' ? 'SH' : "")));
+												$td3 = ($periode == "SB" && $weeks == 3) ? "SB" : ($periode == 'SM' ? "SM" : (($date_fix && $month == $b['nomor_bulan'] && $weeks == 3) ? $periode : ($periode == 'SH' ? 'SH' : "")));
+												$td4 = ($periode == "SB" && $weeks == 4) ? "SB" : ($periode == 'SM' ? "SM" : (($date_fix && $month == $b['nomor_bulan'] && $weeks == 4) ? $periode : ($periode == 'SH' ? 'SH' : "")));
+												$td5 = ($periode == "SB" && $weeks >= 5) ? "SB" : ($periode == 'SM' ? "SM" : (($date_fix && $month == $b['nomor_bulan'] && $weeks >= 5) ? $periode : ($periode == 'SH' ? 'SH' : "")));
+
+											?>
+												<td style="text-align: center"><?= $td1 ?></td>
+												<td style="text-align: center"><?= $td2 ?></td>
+												<td style="text-align: center"><?= $td3 ?></td>
+												<td style="text-align: center"><?= $td4 ?></td>
+											<?php
+											}
+											?>
+											<td><?= $item['keterangan'] ?></td>
+										</tr>
+								<?php
+									}
+
+									$last_id_bangunan = $item['id_jenis_bangunan'];
+									$last_id_peralatan = $item['id_jenis_peralatan'];
+									$last_id_item = $item['id_item_peralatan'];
+								}
+								?>
 							</tbody>
 						</table>
 					</div>

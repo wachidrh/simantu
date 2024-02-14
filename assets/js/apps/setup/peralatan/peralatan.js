@@ -94,13 +94,13 @@ var KTPeralatanList = (function () {
 							},
 						},
 					},
-					'id_jenis_peralatan': {
-						validators: {
-							notEmpty: {
-								message: "Nama jenis peralatan harus diisi",
-							},
-						},
-					},
+					// 'id_jenis_peralatan': {
+					// 	validators: {
+					// 		notEmpty: {
+					// 			message: "Nama jenis peralatan harus diisi",
+					// 		},
+					// 	},
+					// },
 				},
 
 				plugins: {
@@ -248,8 +248,6 @@ var KTPeralatanList = (function () {
 							},
 						},
 					},
-				},
-				fields: {
 					eidt_id_jenis_bangunan: {
 						validators: {
 							notEmpty: {

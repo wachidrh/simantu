@@ -37,129 +37,87 @@
 					</div>
 				</div> -->
 				<div class="card-body pt-6">
-					<form method="POST" class="form w-100 mb-5" id="form-pemeriksaan-elektromekanis">
-						<input type="hidden" name="id_periode" value="<?= $bangunan['item_pemeriksaan'][0]['id_periode'] ?>">
-						<?php
-						$last_id_bangunan = 0;
-						$last_id_peralatan = 0;
-						$last_id_item = 0;
-						$last_start_bangunan = 1;
-						$last_start_peralatan = 1;
+					<!--begin::Alert-->
+					<div class="alert alert-dismissible bg-light-primary d-flex flex-column flex-sm-row p-5 mb-10">
+						<!--begin::Icon-->
+						<i class="ki-duotone ki-notification-bing fs-2hx text-primary me-4 mb-5 mb-sm-0"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+						<!--end::Icon-->
 
-						foreach ($bangunan['item_pemeriksaan'] as $key => $item) {
-							if ($last_id_peralatan != $item['id_jenis_peralatan']) {
-						?>
-								<h3>
-									<ol type="A" start="<?= $last_start_peralatan ?>">
-										<li>
-											<?= $item['nama'] ?>
-										</li>
-									</ol>
-								</h3>
+						<!--begin::Wrapper-->
+						<div class="d-flex flex-column pe-0 pe-sm-10">
+							<!--begin::Title-->
+							<h4 class="fw-semibold">Berhasil scan!</h4>
+							<!--end::Title-->
 
-
-							<?php
-							}
-							if ($key == 0) {
-							?>
-								<!--begin::Form group-->
-
-								<div id="kt_repeater_bangunan">
-									<div class="form-group">
-										<div data-repeater-list="repeater_bangunan">
-										<?php } ?>
-										<div data-repeater-item class="mb-3">
-											<input type="hidden" name="id_jenis_bangunan" value="<?= $item['id_jenis_bangunan'] ?>">
-											<input type="hidden" name="id_jenis_peralatan" value="<?= $item['id_jenis_peralatan'] ?>">
-											<input type="hidden" name="id_item_peralatan" value="<?= $item['id_item_peralatan'] ?>">
-											<div class="form-group row mb-5 pb-2">
-												<div class="col-lg-4">
-													<label class="form-label">Nama Peralatan:</label>
-													<input type="text" class="form-control form-control-sm mb-2 mb-md-0" readonly value="<?= $item['nama_item'] ?>" />
-												</div>
-												<div class="col">
-													<div class="item-repeater">
-														<div data-repeater-list="repeater_kriteria" class="">
-															<div data-repeater-item class="row">
-																<div class="col-lg-4 fv-row fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
-																	<label for="id_kriteria" class="required form-label">Kriteria pemeriksaan</label>
-																	<select name="id_kriteria" class="form-select form-select-sm" aria-label="Select example">
-																		<option value="">Pilih kriteria</option>
-																		<?php foreach ($m_kriteria as $key => $value) { ?>
-																			<option value="<?= $value['id_kriteria'] ?>"><?= $value['kriteria'] ?></option>
-																		<?php } ?>
-																	</select>
-																	<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
-																</div>
-
-																<div class="col-lg-4 fv-row fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
-																	<label for="id_metode" class="required form-label">Metode pemeriksaan</label>
-																	<select name="id_metode" class="form-select form-select-sm" aria-label="Select example">
-																		<option value="">Pilih metode</option>
-																		<?php foreach ($m_metode as $key => $value) { ?>
-																			<option value="<?= $value['id_metode'] ?>"><?= $value['metode'] ?></option>
-																		<?php } ?>
-																	</select>
-																	<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
-																</div>
-
-																<div class="col-lg-4 fv-row fv-plugins-icon-container fv-plugins-bootstrap5-row-valid">
-																	<label for="hasil_periksa" class="required form-label">Hasil pemeriksaan</label>
-																	<select name="hasil_periksa" class="form-select form-select-sm" aria-label="Select example">
-																		<option value="">Pilih nilai hasil</option>
-																		<option value="BA">Baik</option>
-																		<option value="RR">Rusak ringan</option>
-																		<option value="RB">Rusak berat</option>
-																	</select>
-																	<div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
-																</div>
-
-																<div class="col">
-																	<button class="border border-secondary btn btn-sm btn-icon btn-flex btn-light-danger mb-2" data-repeater-delete type="button">
-																		<i class="ki-duotone ki-trash fs-5"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i>
-																	</button>
-																</div>
-
-															</div>
-														</div>
-
-														<button class=" btn btn-sm btn-flex btn-light-primary" data-repeater-create type="button">
-															<i class="ki-duotone ki-plus fs-5"></i>
-															Add Number
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-										<?php if ($key == sizeof($bangunan['item_pemeriksaan']) - 1) { ?>
-
-										</div>
-									</div>
-								</div>
-								<!--end::Form group-->
-						<?php
-										}
-										$last_id_bangunan = $item['id_jenis_bangunan'];
-										if ($last_id_peralatan != $item['id_jenis_peralatan']) {
-											$last_start_peralatan++;
-										}
-										$last_id_peralatan = $item['id_jenis_peralatan'];
-										$last_id_item = $item['id_item_peralatan'];
-									}
-						?>
-
-						<div class="d-flex flex-stack">
-							<button id="btn-submit-pemeriksaan" class="btn btn-primary me-2 flex-shrink-0">
-								<span class="indicator-label" data-kt-translate="btn-submit-pemeriksaan">
-									Simpan
-								</span>
-								<span class="indicator-progress">
-									<span data-kt-translate="general-progress">Harap tunggu...</span>
-									<span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-								</span>
-							</button>
+							<!--begin::Content-->
+							<span>Anda melakukan pemindaian NFC di <br/> <b><?= $bangunan['bangunan']['nama_peralatan'] .' - '. $bangunan['bangunan']['nama_bangunan'].' - '.$bangunan['bangunan']['nama_lokasi']?></b>. <br/>Silakan pilih periode pemeriksaan untuk pengisian form!</span>
+							<!--end::Content-->
 						</div>
+						<!--end::Wrapper-->
+
+						<!--begin::Close-->
+						<button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
+							<i class="ki-duotone ki-cross fs-1 text-primary"><span class="path1"></span><span class="path2"></span></i>
+						</button>
+						<!--end::Close-->
+					</div>
+					<!--end::Alert-->
+					<div class="text-center">
+					<?php
+					if ($_SERVER['HTTP_HOST'] == 'localhost' || $_SERVER['HTTP_HOST'] == '127.0.0.1' || $_SERVER['HTTP_HOST'] == 'localhost:8000') {
+						$form_url = '/simantu/pemeriksaan/elektromekanis/input-form';
+					} else {
+						$form_url = '/pemeriksaan/elektromekanis/input-form';
+					  }
+					?>
+					<form id="redirectForm" action="<?= $form_url ?>" method="post">
+						<input type="hidden" name="periode" value="">
+						<input type="hidden" name="id_bangunan" value="">
+						<input type="hidden" name="id_peralatan" value="">
+						<!-- Add more parameters as needed -->
 					</form>
+						<a href="#" class="btn btn-primary mb-4 col-12 col-md-3 cek-jadwal" data-periode="1" data-id-bangunan="<?= $bangunan['bangunan']['id_m_jenis_bangunan'] ?>" data-id-peralatan="<?= $bangunan['bangunan']['id_m_jenis_peralatan'] ?>">
+							<i class="ki-duotone ki-pencil fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+							Setiap Operasi
+						</a>
+						<a href="#" class="btn btn-primary mb-4 col-12 col-md-3 cek-jadwal" data-periode="2" data-id-bangunan="<?= $bangunan['bangunan']['id_m_jenis_bangunan'] ?>" data-id-peralatan="<?= $bangunan['bangunan']['id_m_jenis_peralatan'] ?>">
+							<i class="ki-duotone ki-pencil fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+							Setiap Hari
+						</a>
+						<a href="#" class="btn btn-primary mb-4 col-12 col-md-3 cek-jadwal" data-periode="3" data-id-bangunan="<?= $bangunan['bangunan']['id_m_jenis_bangunan'] ?>" data-id-peralatan="<?= $bangunan['bangunan']['id_m_jenis_peralatan'] ?>">
+							<i class="ki-duotone ki-pencil fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+							Setiap Minggu
+						</a>
+						<a href="#" class="btn btn-primary mb-4 col-12 col-md-3 cek-jadwal" data-periode="4" data-id-bangunan="<?= $bangunan['bangunan']['id_m_jenis_bangunan'] ?>" data-id-peralatan="<?= $bangunan['bangunan']['id_m_jenis_peralatan'] ?>">
+							<i class="ki-duotone ki-pencil fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+							Setiap Bulan
+						</a>
+						<a href="#" class="btn btn-primary mb-4 col-12 col-md-3 cek-jadwal" data-periode="5" data-id-bangunan="<?= $bangunan['bangunan']['id_m_jenis_bangunan'] ?>" data-id-peralatan="<?= $bangunan['bangunan']['id_m_jenis_peralatan'] ?>">
+							<i class="ki-duotone ki-pencil fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+							Setiap 3 Bulan
+						</a>
+						<a href="#" class="btn btn-primary mb-4 col-12 col-md-3 cek-jadwal" data-periode="6" data-id-bangunan="<?= $bangunan['bangunan']['id_m_jenis_bangunan'] ?>" data-id-peralatan="<?= $bangunan['bangunan']['id_m_jenis_peralatan'] ?>">
+							<i class="ki-duotone ki-pencil fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+							Setiap 6 Bulan
+						</a>
+						<a href="#" class="btn btn-primary mb-4 col-12 col-md-3 cek-jadwal" data-periode="7" data-id-bangunan="<?= $bangunan['bangunan']['id_m_jenis_bangunan'] ?>" data-id-peralatan="<?= $bangunan['bangunan']['id_m_jenis_peralatan'] ?>">
+							<i class="ki-duotone ki-pencil fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+							Setiap Tahun
+						</a>
+						<a href="#" class="btn btn-primary mb-4 col-12 col-md-3 cek-jadwal" data-periode="8" data-id-bangunan="<?= $bangunan['bangunan']['id_m_jenis_bangunan'] ?>" data-id-peralatan="<?= $bangunan['bangunan']['id_m_jenis_peralatan'] ?>">
+							<i class="ki-duotone ki-pencil fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+							Setiap 2 Tahun
+						</a>
+						<a href="#" class="btn btn-primary mb-4 col-12 col-md-3 cek-jadwal" data-periode="9" data-id-bangunan="<?= $bangunan['bangunan']['id_m_jenis_bangunan'] ?>" data-id-peralatan="<?= $bangunan['bangunan']['id_m_jenis_peralatan'] ?>">
+							<i class="ki-duotone ki-pencil fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+							Setiap 4 Tahun
+						</a>
+						<a href="#" class="btn btn-primary mb-4 col-12 col-md-3 cek-jadwal" data-periode="10" data-id-bangunan="<?= $bangunan['bangunan']['id_m_jenis_bangunan'] ?>" data-id-peralatan="<?= $bangunan['bangunan']['id_m_jenis_peralatan'] ?>">
+							<i class="ki-duotone ki-pencil fs-1"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></i>
+							Setiap 5 Tahun
+						</a>
+					</div>
+					
 				</div>
 			</div>
 		</div>

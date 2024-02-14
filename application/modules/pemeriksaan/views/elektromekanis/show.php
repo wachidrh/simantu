@@ -27,19 +27,19 @@
 								<td><?= $periksa['nama_lokasi'] ?></th>
 							</tr>
 							<tr>
-								<th>Lokasi</th>
+								<th>Jenis Bangunan</th>
 								<td class="px-2">:</th>
-								<td><?= $periksa['nama_lokasi'] ?></th>
+								<td><?= $periksa['item_periksa'][0]['nama_bangunan'] ?></th>
 							</tr>
 							<tr>
 								<th>Tanggal Pemeriksaan</th>
 								<td class="px-2">:</th>
-								<td><?= $periksa['nama_lokasi'] ?></th>
+								<td><?= format_time(strtotime($periksa['created_at'])) ?></th>
 							</tr>
 							<tr>
 								<th>Periode Pemeriksaan</th>
 								<td class="px-2">:</th>
-								<td><?= $periksa['nama_lokasi'] ?></th>
+								<td><?= $periksa['keterangan_periode'] ?></th>
 							</tr>
 						</table>
 					</div>
@@ -89,9 +89,6 @@
 							</thead>
 							<tbody>
 								<?php
-								echo '<pre>';
-								var_dump($periksa);
-								echo '</pre>';
 								$last_id_bangunan = 0;
 								$last_id_peralatan = 0;
 								$last_start_bangunan = 1;
@@ -141,6 +138,7 @@
 										<td><?= $val['kriteria'] ?></td>
 										<td><?= $val['metode'] ?></td>
 										<td><?= $val['hasil_periksa'] ?></td>
+										<td><?= $val['catatan'] ?></td>
 									</tr>
 								<?php
 								}

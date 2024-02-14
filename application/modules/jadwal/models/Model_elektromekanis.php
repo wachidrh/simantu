@@ -100,36 +100,83 @@ class Model_elektromekanis extends CI_Model
 
 		$this->db->insert_batch('tbl_approval', $input_penyetujuan);
 
-		$input_item_jadwal = array();
 		foreach ($input['data_bangunan'] as $outer) {
 			foreach ($outer['repeater_peralatan'] as $peralatan) {
 				foreach ($peralatan['repeater_item'] as $item) {
 					switch ($item['tgl_periksa']) {
 						case null:
-							$item['tgl_periksa'] = '0000-00-00';
+							$item['tgl_periksa_start'] = '0000-00-00';
+							$item['tgl_periksa_end'] = '0000-00-00';
 							break;
 						default:
-							$item['tgl_periksa'];
+							$dateParts = explode(" to ", $item['tgl_periksa']);
+							$item['tgl_periksa_start'] = $dateParts[0];
+							$item['tgl_periksa_end'] = isset($dateParts[1]) ? $dateParts[1] : $dateParts[0];
 							break;
 					}
-					$input_item_jadwal[] = array(
+
+					$input_item_jadwal = array(
 						'id_item_jadwal' => $id_item_jadwal,
 						'id_jadwal' => $id_jadwal,
+						'jenis_jadwal' => 1,
 						'id_jenis_bangunan' => (int)$outer['id_jenis_bangunan'],
 						'id_jenis_peralatan' => (int)$peralatan['id_jenis_peralatan'],
 						'id_item_peralatan' => (int)$item['id_item_peralatan'],
 						'id_periode'	=> (int)$item['id_periode'],
-						'tgl_periksa' => $item['tgl_periksa'],
+						'id_kriteria'	=> (int)$item['id_kriteria'],
+						'id_metode_pemeriksaan'	=> (int)$item['id_metode'],
+						'keterangan' => $item['keterangan'],
 					);
+
+					if (!in_array($item['id_periode'], [1, 2, 3]) && $item['tgl_periksa'] != null) {
+						$this->db->set('"tgl_periksa_start"',"TO_DATE('".$item['tgl_periksa_start']."', 'YYYY-MM-DD')", false);
+						$this->db->set('"tgl_periksa_end"', "TO_DATE('".$item['tgl_periksa_end']."', 'YYYY-MM-DD')", false);
+					}
+					$this->db->insert('tbl_item_jadwal', $input_item_jadwal);
 					$id_item_jadwal++;
 				}
 			}
 		}
 
-		$query = $this->db->insert_batch('tbl_item_jadwal', $input_item_jadwal);
-		$this->db->trans_complete();
+		foreach ($input['data_rawat_bangunan'] as $outer) {
+			foreach ($outer['repeater_rawat_peralatan'] as $peralatan) {
+				foreach ($peralatan['repeater_rawat_item'] as $item) {
+					switch ($item['tgl_periksa']) {
+						case null:
+							$item['tgl_periksa_start'] = '0000-00-00';
+							$item['tgl_periksa_end'] = '0000-00-00';
+							break;
+						default:
+							$dateParts = explode(" to ", $item['tgl_periksa']);
+							$item['tgl_periksa_start'] = $dateParts[0];
+							$item['tgl_periksa_end'] = isset($dateParts[1]) ? $dateParts[1] : $dateParts[0];
+							break;
+					}
 
-		return $query;
+					$input_item_jadwal = array(
+						'id_item_jadwal' => $id_item_jadwal,
+						'id_jadwal' => $id_jadwal,
+						'jenis_jadwal' => 2,
+						'id_jenis_bangunan' => (int)$outer['id_jenis_bangunan'],
+						'id_jenis_peralatan' => (int)$peralatan['id_jenis_peralatan'],
+						'id_item_peralatan' => (int)$item['id_item_peralatan'],
+						'id_periode'	=> (int)$item['id_periode'],
+						'type_pelaksanaan_perawatan'	=> $item['id_pelaksanaan'],
+						'keterangan' => $item['keterangan'],
+					);
+
+					if (!in_array($item['id_periode'], [1, 2, 3]) && $item['tgl_periksa'] != null) {
+						$this->db->set('"tgl_periksa_start"',"TO_DATE('".$item['tgl_periksa_start']."', 'YYYY-MM-DD')", false);
+						$this->db->set('"tgl_periksa_end"', "TO_DATE('".$item['tgl_periksa_end']."', 'YYYY-MM-DD')", false);
+					}
+
+					$this->db->insert('tbl_item_jadwal', $input_item_jadwal);
+					$id_item_jadwal++;
+				}
+			}
+		}
+
+		return $this->db->trans_complete();
 	}
 
 	public function lookup($id)
@@ -156,14 +203,28 @@ class Model_elektromekanis extends CI_Model
 			->get()
 			->result_array();
 
-		$jadwal['item_jadwal'] = $this->db
-			->select('a.id_item_jadwal, a.id_jadwal, a.id_jenis_bangunan, b.nama_bangunan, a.id_jenis_peralatan, d.nama, a.id_item_peralatan, e.nama_item, a.id_periode, c.periode, a.tgl_periksa')
+		$jadwal['item_jadwal_pemeriksaan'] = $this->db
+			->select('a.id_item_jadwal, a.id_jadwal, a.id_jenis_bangunan, b.nama_bangunan, a.id_jenis_peralatan, d.nama, a.id_item_peralatan, e.nama_item, a.id_periode, c.periode, a.tgl_periksa_start, a.tgl_periksa_end, a.jenis_jadwal, a.keterangan')
 			->from('tbl_item_jadwal a')
 			->join('m_jenis_bangunan b', 'a.id_jenis_bangunan = b.id_jenis_bangunan', 'left')
 			->join('m_periode c', 'a.id_periode = c.id_periode', 'left')
 			->join('m_jenis_peralatan d', 'a.id_jenis_peralatan = d.id_jenis_peralatan', 'left')
 			->join('m_item_peralatan e', 'a.id_item_peralatan = e.id_item_peralatan', 'left')
 			->where('a.id_jadwal =', (int)$jadwal['id_jadwal'])
+			->where('a.jenis_jadwal =', 1)
+			->order_by('a.id_item_jadwal', 'asc')
+			->get()
+			->result_array();
+
+		$jadwal['item_jadwal_perawatan'] = $this->db
+			->select('a.id_item_jadwal, a.id_jadwal, a.id_jenis_bangunan, b.nama_bangunan, a.id_jenis_peralatan, d.nama, a.id_item_peralatan, e.nama_item, a.id_periode, c.periode, a.tgl_periksa_start, a.tgl_periksa_end, a.jenis_jadwal, a.keterangan')
+			->from('tbl_item_jadwal a')
+			->join('m_jenis_bangunan b', 'a.id_jenis_bangunan = b.id_jenis_bangunan', 'left')
+			->join('m_periode c', 'a.id_periode = c.id_periode', 'left')
+			->join('m_jenis_peralatan d', 'a.id_jenis_peralatan = d.id_jenis_peralatan', 'left')
+			->join('m_item_peralatan e', 'a.id_item_peralatan = e.id_item_peralatan', 'left')
+			->where('a.id_jadwal =', (int)$jadwal['id_jadwal'])
+			->where('a.jenis_jadwal =', 2)
 			->order_by('a.id_item_jadwal', 'asc')
 			->get()
 			->result_array();
@@ -216,6 +277,24 @@ class Model_elektromekanis extends CI_Model
 			->where('is_deleted !=', 1)
 			->order_by('nama_bangunan', 'asc')
 			->get('m_jenis_bangunan')
+			->result();
+	}
+
+	public function get_all_m_kriteria()
+	{
+		return $this->db
+			->where('is_deleted !=', 1)
+			->order_by('kriteria', 'asc')
+			->get('m_kriteria_pemeriksaan')
+			->result();
+	}
+
+	public function get_all_m_metode()
+	{
+		return $this->db
+			->where('is_deleted !=', 1)
+			->order_by('metode', 'asc')
+			->get('m_metode_pemeriksaan')
 			->result();
 	}
 

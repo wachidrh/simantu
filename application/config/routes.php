@@ -63,7 +63,10 @@ $route['master/metode/delete'] = 'master_metode/metode/delete';
 
 // jadwal
 $route['jadwal/elektromekanis/detail/(:any)'] = 'jadwal/elektromekanis/show/$1';
+$route['jadwal/elektromekanis/store-perawatan'] = 'jadwal/elektromekanis/storePerawatan';
 
 // pemeriksaan
 $route['pemeriksaan/eletromekanis/form/(:any)'] = 'pemeriksaan/elektromekanis/form/$1';
 $route['pemeriksaan/elektromekanis/detail/(:any)'] = 'pemeriksaan/elektromekanis/show/$1';
+$route['pemeriksaan/elektromekanis/cek-jadwal'] = 'pemeriksaan/elektromekanis/cek_jadwal';
+$route['pemeriksaan/elektromekanis/form-input/(:any)/(:any)/(:any)'] = 'pemeriksaan/elektromekanis/form_input/$1/$2/$3';

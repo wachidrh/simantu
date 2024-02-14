@@ -14,8 +14,9 @@ class Model_pengguna extends CI_Model
     // Get Data Asal Aktiva
     public function _get_data_pengguna()
     {
-        $this->db->select('*');
-        $this->db->from('tbl_auth');
+		$this->db->select('a.*, b.nama_lokasi');
+		$this->db->join('m_lokasi b', 'a.unit_id = b.id_lokasi', 'left');
+		$this->db->from('tbl_auth a');
 
         $i = 0;
 
@@ -68,4 +69,33 @@ class Model_pengguna extends CI_Model
         $query = $this->db->get();
         return $query->result_array();
     }
+
+	function get_m_lokasi()
+	{
+		$this->db->select('*');
+		$this->db->from('m_lokasi');
+		$query = $this->db->get();
+		return $query->result_array();
+	}
+
+	function store($input)
+	{
+		return $this->db->insert('tbl_auth', $input);
+	}
+
+	function lookup($id)
+	{
+		$this->db->select('*');
+		$this->db->from('tbl_auth');
+		$this->db->where('auth_id', $id);
+		$query = $this->db->get();
+		return $query->row_array();
+	}
+
+	public function update($data)
+	{
+		return $this->db
+		->where('auth_id', $data['auth_id'])
+		->update('tbl_auth', $data);
+	}
 }

@@ -1,4 +1,5 @@
 <?php
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Login extends CI_Controller
@@ -65,10 +66,28 @@ class Login extends CI_Controller
 						if ($pegawai['data']['personal_data']['flag'] == 1) {
 							$result = array('status'  => true, 'messages' => 'Login berhasil. Anda akan diarahkan ke Dashboard.');
 
-							$query = $this->db->query('SELECT * FROM "tbl_auth" WHERE "kopeg" = ?', array($pegawai['data']['personal_data']['kopeg']));
-							$auth = $query->row_array();
+							$update_data = [
+								'email' => $pegawai['data']['personal_data']['email'],
+								'full_name' => $pegawai['data']['personal_data']['full_name'],
+							];
+
+							$this->db->update('tbl_auth', $update_data, ['kopeg' => $pegawai['data']['personal_data']['kopeg']]);
+
+							$query = $this->db->query('SELECT * FROM "tbl_auth" WHERE "kopeg" = ? AND "is_aktif" = 1', array($pegawai['data']['personal_data']['kopeg']));
+							$auth = $query->result_array();
+
+							if (sizeof($auth) == 0) {
+								echo json_encode(
+									array(
+										'status'  => 'blocked',
+										'messages' => 'Akun anda belum terdaftar di aplikasi Simantu. Silahkan hubungi administrator.'
+									)
+								);
+								exit();
+							}
+
 							$session = [
-								'personal_access' => $auth
+								'active_auth' => $auth[0]
 							];
 							$this->session->set_userdata($pegawai['data']['personal_data']);
 							$this->session->set_userdata($session);
