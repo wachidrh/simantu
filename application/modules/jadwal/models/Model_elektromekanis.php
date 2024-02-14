@@ -239,11 +239,23 @@ class Model_elektromekanis extends CI_Model
 			->update('m_jenis_bangunan', $data);
 	}
 
-	public function delete($ids, $data)
+	public function delete($ids)
 	{
-		return $this->db
-			->where_in('id_jenis_bangunan', $ids)
-			->update('m_jenis_bangunan', $data);
+		$this->db->trans_start();
+		$this->db
+			->where_in('id_jadwal', $ids)
+			->delete('tbl_item_jadwal');
+		
+		$this->db
+			->where_in('id_ref_table', $ids)
+			->where('reference_table', 'tbl_jadwal')
+			->delete('tbl_approval');
+
+		$this->db
+			->where_in('id_jadwal', $ids)
+			->delete('tbl_jadwal');
+		return $this->db->trans_complete();
+
 	}
 
 	public function get_all_m_peralatan()

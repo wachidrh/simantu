@@ -294,7 +294,7 @@ var KTJadwal = (function () {
 						if (result.status == true) {
 							$("#modal_generate_jadwal").modal("hide");
 							Swal.fire({
-								text: "Data item peralatan berhasil ditambahkan",
+								text: result.messages,
 								icon: "success",
 								confirmButtonColor: "#3085d6",
 								confirmButtonText: "Ok",
@@ -303,8 +303,8 @@ var KTJadwal = (function () {
 							formTambahJadwal.reset();
 
 						} else {
-							toastr.warning(
-								"Data item peralatan gagal ditambahkan",
+							toastr.error(
+								result.messages,
 								"Gagal!",
 								{
 									timeOut: 2000,
@@ -336,10 +336,10 @@ var KTJadwal = (function () {
 			$(document).on("click", ".hapus-jadwal", function (e) {
 				e.preventDefault();
 
-				var id_item_peralatan = $(this).attr("data-id");
+				var id_jadwal = $(this).attr("data-id");
 
 				Swal.fire({
-					text: "Apakah Anda yakin ingin menghapus item peralatan yang dipilih?",
+					text: "Apakah Anda yakin ingin menghapus jadwal yang dipilih?",
 					icon: "warning",
 					showCancelButton: true,
 					buttonsStyling: false,
@@ -352,9 +352,9 @@ var KTJadwal = (function () {
 				}).then(function (result) {
 					if (result.isConfirmed) {
 						$.ajax({
-							url: hostUrl + "master/item-peralatan/delete",
+							url: hostUrl + "jadwal/elektromekanis/delete",
 							type: "POST",
-							data: { "id_item_peralatan[]": id_item_peralatan },
+							data: { "id_jadwal[]": id_jadwal },
 							beforeSend: function () {
 								KTApp.showPageLoading();
 							},
@@ -364,7 +364,7 @@ var KTJadwal = (function () {
 								if (response.status == true) {
 									table.ajax.reload(null, false);
 									Swal.fire({
-										text: "Anda telah menghapus semua item peralatan terpilih!",
+										text: "Anda telah menghapus jadwal terpilih!",
 										icon: "success",
 										buttonsStyling: false,
 										confirmButtonText: "Ok, mengerti!",

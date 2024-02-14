@@ -48,20 +48,20 @@
 							<?php
 							$index = array_search($_SESSION['kopeg'], array_column($periksa['penyetuju'], 'approver_id'));
 
-							if ($index !== false && $periksa['penyetuju'][$index]['status'] == "0") {
-								echo '<button type="button" class="btn btn-primary" id="setujui_jadwal" data-jadwal="' . $periksa['id_jadwal'] . '"> Setujui Jadwal </button>';
-							} elseif ($index !== false && $periksa['penyetuju'][$index]['status'] == "1") {
-								echo '<span class="badge badge-success">Disetujui</span>';
-							} else {
-								$countStatusZero = count(array_filter($periksa['penyetuju'], function ($item) {
-									return $item['status'] == "1";
-								}));
-								if ($countStatusZero < sizeof($periksa['penyetuju'])) {
-									echo '<span class="badge badge-warning">Belum Disetujui</span>';
-								} else {
-									echo '<span class="badge badge-success">Disetujui</span>';
-								}
-							}
+							// if ($index !== false && $periksa['penyetuju'][$index]['status'] == "0") {
+							// 	echo '<button type="button" class="btn btn-primary" id="setujui_jadwal" data-jadwal="' . $periksa['id_periksa'] . '"> Setujui laporan </button>';
+							// } elseif ($index !== false && $periksa['penyetuju'][$index]['status'] == "1") {
+							// 	echo '<span class="badge badge-success">Disetujui</span>';
+							// } else {
+							// 	$countStatusZero = count(array_filter($periksa['penyetuju'], function ($item) {
+							// 		return $item['status'] == "1";
+							// 	}));
+							// 	if ($countStatusZero < sizeof($periksa['penyetuju'])) {
+							// 		echo '<span class="badge badge-warning">Belum Disetujui</span>';
+							// 	} else {
+							// 		echo '<span class="badge badge-success">Disetujui</span>';
+							// 	}
+							// }
 							?>
 						</div>
 					</div>

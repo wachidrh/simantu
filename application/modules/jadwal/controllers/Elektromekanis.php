@@ -11,6 +11,7 @@ class Elektromekanis extends CI_Controller
 			redirect('login');
 		}
 		$this->load->model('Model_elektromekanis', 'elektromekanis');
+		$this->load->library('form_validation');
 		$this->now = date('Y-m-d H:i:s');
 	}
 
@@ -78,6 +79,11 @@ class Elektromekanis extends CI_Controller
 	{
 		$tahun_jadwal = $this->security->xss_clean($this->input->post('tahun_jadwal'));
 		$triwulan = $this->security->xss_clean($this->input->post('triwulan'));
+		$rows = $this->db->from('tbl_jadwal')->where('triwulan', $triwulan)->where('tahun_jadwal', $tahun_jadwal)->get()->num_rows();
+		if($rows > 0){
+			echo json_encode( array('status'  => false, 'messages' => "Jadwal dengan triwulan $triwulan dan tahun $tahun_jadwal sudah ada"));
+			return;
+		}
 		$data_bangunan = $this->security->xss_clean($this->input->post('repeater_bangunan_outer'));
 		$data_rawat_bangunan = $this->security->xss_clean($this->input->post('repeater_rawat_bangunan_outer'));
 
@@ -136,15 +142,11 @@ class Elektromekanis extends CI_Controller
 
 	public function delete()
 	{
-		$id_jenis_bangunan = $this->security->xss_clean($this->input->post('id_jenis_bangunan'));
-		$data = array(
-			'is_deleted' => 1,
-		);
-		$this->db->set('"updated_at"', "TO_DATE('$this->now', 'YYYY-MM-DD HH24:MI:SS')", false);
-		if ($this->bangunan->delete($id_jenis_bangunan, $data)) {
-			$result = array('status'  => true, 'messages' => 'Jenis bangunan dihapus');
+		$id_jadwal	 = $this->security->xss_clean($this->input->post('id_jadwal'));
+		if ($this->elektromekanis->delete($id_jadwal)) {
+			$result = array('status'  => true, 'messages' => 'Jadwal dihapus');
 		} else {
-			$result = array('status'  => false, 'messages' => 'Jenis bangunan gagal dihapus');
+			$result = array('status'  => false, 'messages' => 'Jadwal gagal dihapus');
 		}
 
 		echo json_encode($result);
