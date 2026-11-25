@@ -25,12 +25,12 @@ class Login extends CI_Controller
 		$kopeg = $this->security->xss_clean(strtolower($this->input->post('kopeg')));
 		$password =  $this->security->xss_clean($this->input->post('password'));
 		$remember_me = isset($_POST['remember-me']) ? true : false;
+		$result = array('status' => false, 'messages' => 'Kode pegawai dan kata sandi wajib diisi.');
 
 		if (!empty($kopeg) && !empty($password)) {
 			$is_valid = $this->recaptcha->is_valid();
 			if ($is_valid['success']) {
 				$api_url = HADIR_API . 'login';
-				$token = $this->config->item('hadir_token');
 				$post_data = array(
 					'kopeg' => $kopeg,
 					'password' => $password
@@ -40,15 +40,21 @@ class Login extends CI_Controller
 
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-					'Bearer:' . $token
+					'Content-Type: application/json',
+					'Accept: application/json'
 				));
 				curl_setopt($ch, CURLOPT_POST, 1);
 				curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
+				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+				curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 
 				$response = curl_exec($ch);
+				$pegawai = $response === false ? null : json_decode($response, true);
 
 				if ($response === false) {
 					$result = array('status'  => false, 'messages' => 'cURL error: ' . curl_error($ch));
+				} elseif (!is_array($pegawai) || !isset($pegawai['status'])) {
+					$result = array('status'  => false, 'messages' => 'Respon server HRIS tidak valid. Silahkan coba lagi.');
 				} else {
 					if ($remember_me) {
 						$cookie_data = [
@@ -59,8 +65,7 @@ class Login extends CI_Controller
 						$this->input->set_cookie($cookie_data);
 					}
 
-					$pegawai = json_decode($response, true);
-					if ($pegawai['status'] == false) {
+					if ($pegawai['status'] == false || empty($pegawai['data']['personal_data'])) {
 						$result = array('status'  => false, 'messages' => 'Periksa kembali kode pegawai & kata sandi Anda.');
 					} else {
 						if ($pegawai['data']['personal_data']['flag'] == 1) {
@@ -87,7 +92,11 @@ class Login extends CI_Controller
 							}
 
 							$session = [
-								'active_auth' => $auth[0]
+								'active_auth' => $auth[0],
+								'hadir_token' => $pegawai['data']['token'] ?? null,
+								'hadir_token_expired_at' => $pegawai['data']['expired_at'] ?? null,
+								'jabatan' => $pegawai['data']['jabatan'] ?? [],
+								'organisasi' => $pegawai['data']['organisasi'] ?? [],
 							];
 							$this->session->set_userdata($pegawai['data']['personal_data']);
 							$this->session->set_userdata($session);
