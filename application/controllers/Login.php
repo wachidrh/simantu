@@ -45,6 +45,7 @@ class Login extends CI_Controller
 				));
 				curl_setopt($ch, CURLOPT_POST, 1);
 				curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
+				curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
 				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
 				curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 
